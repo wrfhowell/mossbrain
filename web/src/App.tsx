@@ -30,7 +30,14 @@ function Splash({ onDone }: { onDone: () => void }) {
 export default function App() {
   const [labels, setLabels] = useState<string[]>([]);
   const [splashDone, setSplashDone] = useState(false);
-  const onLabelsChange = useCallback((l: string[]) => setLabels(l), []);
+  const onLabelsChange = useCallback((incoming: string[]) => {
+    setLabels((prev) => {
+      const merged = Array.from(new Set([...prev, ...incoming])).sort();
+      if (merged.length === prev.length && merged.every((l, i) => l === prev[i]))
+        return prev;
+      return merged;
+    });
+  }, []);
   const onSplashDone = useCallback(() => setSplashDone(true), []);
 
   return (

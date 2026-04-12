@@ -2,26 +2,12 @@ import { Hono } from "hono";
 import crypto from "node:crypto";
 import { db } from "../db/index.js";
 import { visitorNotes } from "../db/schema.js";
-import { desc } from "drizzle-orm";
+import { desc, eq, count } from "drizzle-orm";
 import type { VisitorNoteResponse } from "../types.js";
 
 const app = new Hono();
 
-const RATE_LIMIT = 5;
-const RATE_WINDOW_MS = 60 * 60 * 1000;
-const rateLimitMap = new Map<string, number[]>();
-
-setInterval(() => {
-  const cutoff = Date.now() - RATE_WINDOW_MS;
-  for (const [key, timestamps] of rateLimitMap) {
-    const filtered = timestamps.filter((t) => t > cutoff);
-    if (filtered.length === 0) {
-      rateLimitMap.delete(key);
-    } else {
-      rateLimitMap.set(key, filtered);
-    }
-  }
-}, 5 * 60 * 1000);
+const MAX_NOTES_PER_VISITOR = 2;
 
 function hashIp(ip: string): string {
   return crypto.createHash("sha256").update(ip).digest("hex");
