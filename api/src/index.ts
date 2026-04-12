@@ -1,12 +1,17 @@
+import { serve } from "@hono/node-server";
+import { serveStatic } from "@hono/node-server/serve-static";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { serveStatic } from "@hono/node-server/serve-static";
-import { serve } from "@hono/node-server";
+import path from "path";
+import { fileURLToPath } from "url";
 import { sessionMiddleware } from "./middleware/auth.js";
-import entriesRoutes from "./routes/entries.js";
 import authRoutes from "./routes/auth.js";
+import entriesRoutes from "./routes/entries.js";
 import telegramRoutes from "./routes/telegram.js";
 import visitorNotesRoutes from "./routes/visitor-notes.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const webDist = path.resolve(__dirname, "../../web/dist");
 
 type Env = {
   Variables: {
@@ -22,7 +27,7 @@ app.use(
   cors({
     origin: process.env.PUBLIC_URL ?? "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 
 app.use("*", sessionMiddleware);
@@ -35,8 +40,8 @@ app.route("/api/visitor-notes", visitorNotesRoutes);
 app.get("/api/health", (c) => c.json({ status: "ok" }));
 
 if (process.env.NODE_ENV === "production") {
-  app.use("*", serveStatic({ root: "../web/dist" }));
-  app.get("*", serveStatic({ root: "../web/dist", path: "index.html" }));
+  app.use("*", serveStatic({ root: webDist }));
+  app.get("*", serveStatic({ root: webDist, path: "index.html" }));
 }
 
 const port = Number(process.env.PORT ?? 3000);
