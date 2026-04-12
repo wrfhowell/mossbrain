@@ -13,16 +13,6 @@ const GRADIENT_CLASSES = [
   "bg-gradient-to-br from-[#6a3020] to-[#7a4030]",
 ];
 
-const ROTATIONS = [
-  "-rotate-[1.2deg]",
-  "rotate-[0.8deg]",
-  "-rotate-[0.5deg]",
-  "rotate-[1.5deg]",
-  "-rotate-[0.9deg]",
-  "rotate-[0.6deg]",
-  "-rotate-[1deg]",
-];
-
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -49,7 +39,6 @@ export default function PhotoMosaic() {
   return (
     <div>
       <div className="flex items-center gap-2 text-[10px] tracking-[2px] uppercase text-faint mb-3">
-        photographs
         <span className="flex-1 h-px bg-border" />
         <button
           onClick={doShuffle}
@@ -59,15 +48,14 @@ export default function PhotoMosaic() {
         </button>
       </div>
       <div className="max-h-[340px] overflow-y-auto">
-        <div className="grid grid-cols-5 gap-[3px]">
+        <div className="grid grid-cols-5 gap-0">
           {media.map((m, i) => {
             const grad = GRADIENT_CLASSES[i % GRADIENT_CLASSES.length];
-            const rot = ROTATIONS[i % ROTATIONS.length];
             return (
               <button
                 key={m.id}
                 onClick={() => navigate(`/log/${m.entry_id}`)}
-                className={`aspect-square overflow-hidden rounded-sm cursor-pointer transition-all duration-150 hover:scale-105 hover:opacity-85 hover:z-10 ${rot}`}
+                className="aspect-square overflow-hidden cursor-pointer transition-all duration-150 hover:scale-105 hover:opacity-85 hover:z-10"
                 title={m.url.split("/").pop() ?? ""}
               >
                 {m.url ? (

@@ -36,26 +36,11 @@ html, body {
   color: var(--color-ink);
 }
 
+* {
+  scrollbar-width: none;
+}
 ::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 2px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-border-light);
-}
-
-@supports not selector(::-webkit-scrollbar) {
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-border) transparent;
-  }
+  display: none;
 }
 
 @keyframes pulse-dot {

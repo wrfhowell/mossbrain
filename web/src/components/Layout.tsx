@@ -1,4 +1,4 @@
-import { useRef, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useParallax } from "../hooks/useParallax";
 import AdminBar from "./AdminBar";
@@ -14,8 +14,7 @@ interface Props {
 }
 
 export default function Layout({ children, labels }: Props) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const scrollY = useParallax(scrollRef);
+  const scrollY = useParallax();
   const { admin } = useAuth();
 
   return (
@@ -28,46 +27,42 @@ export default function Layout({ children, labels }: Props) {
       </div>
 
       <div
-        className={`max-w-[1320px] mx-auto px-6 md:px-12 py-10 flex flex-col min-h-screen ${admin ? "pt-14" : ""}`}
+        className={`max-w-[1320px] mx-auto px-8 md:px-16 py-10 flex flex-col min-h-screen ${admin ? "pt-14" : ""}`}
       >
         {/* Top bar */}
-        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-5 mb-6">
-          <div className="flex items-center gap-3">
-            <Logo size={28} />
-            <div className="font-medium text-sm tracking-wide text-ink">
-              mossbrain
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <LabelFilter labels={labels} />
+        <header className="flex items-center gap-3 pb-5 mb-6">
+          <Logo size={28} />
+          <div className="font-medium text-sm tracking-wide text-ink">
+            mossbrain
           </div>
         </header>
+
+        {/* Mobile: Photos → Filter → Notes → Feed */}
+        <div className="lg:hidden space-y-6">
+          <PhotoMosaic />
+          <LabelFilter labels={labels} />
+          <div className="border-t border-border pt-4">
+            <VisitorNotes compact />
+          </div>
+        </div>
 
         {/* Main grid */}
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-0 min-h-0">
           {/* Left: Feed */}
-          <main
-            ref={scrollRef}
-            className="lg:border-r lg:border-border lg:pr-8 overflow-y-auto max-h-[calc(100vh-140px)] lg:max-h-[calc(100vh-180px)]"
-          >
+          <main className="lg:border-r lg:border-border lg:pr-8">
             {children}
           </main>
 
-          {/* Right: Photos + Notes */}
-          <aside className="hidden lg:flex flex-col pl-6">
+          {/* Right: Photos + Filter + Notes */}
+          <aside className="hidden lg:flex flex-col pl-6 self-start sticky top-10">
             <PhotoMosaic />
+            <div className="border-t border-border mt-3 pt-4">
+              <LabelFilter labels={labels} />
+            </div>
             <div className="border-t border-border mt-3 pt-4">
               <VisitorNotes />
             </div>
           </aside>
-        </div>
-
-        {/* Mobile: Photos + Notes below feed */}
-        <div className="lg:hidden mt-6 space-y-6">
-          <PhotoMosaic />
-          <div className="border-t border-border pt-4">
-            <VisitorNotes />
-          </div>
         </div>
 
         {/* Footer */}

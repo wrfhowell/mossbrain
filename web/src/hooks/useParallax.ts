@@ -1,27 +1,24 @@
-import { useState, useEffect, type RefObject } from "react";
+import { useState, useEffect } from "react";
 
-export function useParallax(ref: RefObject<HTMLElement | null>) {
+export function useParallax() {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mql.matches) return;
 
-    const el = ref.current;
-    if (!el) return;
-
     let raf = 0;
     const onScroll = () => {
       cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => setScrollY(el.scrollTop));
+      raf = requestAnimationFrame(() => setScrollY(window.scrollY));
     };
 
-    el.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      el.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
     };
-  }, [ref]);
+  }, []);
 
   return scrollY;
 }

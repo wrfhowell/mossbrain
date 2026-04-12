@@ -103,7 +103,7 @@ export default function Feed({ label, onLabelsChange }: Props) {
   }, [items]);
 
   useEffect(() => {
-    onLabelsChange?.(allLabels);
+    if (allLabels.length > 0) onLabelsChange?.(allLabels);
   }, [allLabels, onLabelsChange]);
 
   const groups = groupByDate(items);

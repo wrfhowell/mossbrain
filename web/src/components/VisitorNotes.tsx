@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { fetchVisitorNotes, postVisitorNote } from "../lib/api";
 import type { VisitorNote } from "../types";
 
-export default function VisitorNotes() {
+interface Props {
+  compact?: boolean;
+}
+
+export default function VisitorNotes({ compact }: Props) {
   const [notes, setNotes] = useState<VisitorNote[]>([]);
   const [body, setBody] = useState("");
   const [posting, setPosting] = useState(false);
@@ -69,7 +73,7 @@ export default function VisitorNotes() {
       </div>
 
       {/* Chip wall */}
-      <div className="flex flex-wrap gap-1 max-h-48 overflow-y-auto">
+      <div className={`flex flex-wrap gap-1 overflow-y-auto ${compact ? "max-h-24" : "max-h-48"}`}>
         {notes.length === 0 && (
           <p className="text-[10px] text-faint italic">no notes yet</p>
         )}
