@@ -61,7 +61,11 @@ function parseMessageText(raw: string): {
   while ((match = tagRegex.exec(text)) !== null) {
     labelNames.push(match[1].toLowerCase());
   }
-  text = text.replace(/#\w+/g, "").replace(/\s+/g, " ").trim();
+  text = text
+    .replace(/#\w+/g, "")
+    .replace(/[^\S\n]+/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 
   return { body: text, visibility, publishedAt, labelNames };
 }
