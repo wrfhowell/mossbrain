@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { serveStatic } from "@hono/node-server/serve-static";
 import { serve } from "@hono/node-server";
 import { sessionMiddleware } from "./middleware/auth.js";
 import entriesRoutes from "./routes/entries.js";
@@ -32,6 +33,11 @@ app.route("/api/telegram", telegramRoutes);
 app.route("/api/visitor-notes", visitorNotesRoutes);
 
 app.get("/api/health", (c) => c.json({ status: "ok" }));
+
+if (process.env.NODE_ENV === "production") {
+  app.use("*", serveStatic({ root: "../web/dist" }));
+  app.get("*", serveStatic({ root: "../web/dist", path: "index.html" }));
+}
 
 const port = Number(process.env.PORT ?? 3000);
 console.log(`mossbrain api listening on port ${port}`);

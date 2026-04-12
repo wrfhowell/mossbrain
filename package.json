@@ -2,7 +2,10 @@
   "name": "mossbrain",
   "private": true,
   "type": "module",
-  "workspaces": ["api", "web"],
+  "workspaces": [
+    "api",
+    "web"
+  ],
   "scripts": {
     "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
     "dev:api": "npm -w api run dev",
