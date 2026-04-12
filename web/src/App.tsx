@@ -10,16 +10,16 @@ function Splash({ onDone }: { onDone: () => void }) {
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    const fadeTimer = setTimeout(() => setFading(true), 500);
-    const doneTimer = setTimeout(onDone, 800);
+    const fadeTimer = setTimeout(() => setFading(true), 1100);
+    const doneTimer = setTimeout(onDone, 1400);
     return () => { clearTimeout(fadeTimer); clearTimeout(doneTimer); };
   }, [onDone]);
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-4 bg-base transition-opacity duration-300 ${fading ? "opacity-0" : "opacity-100"}`}
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-10 bg-base transition-opacity duration-300 ${fading ? "opacity-0" : "opacity-100"}`}
     >
-      <Logo float size={72} />
+      <Logo float floatSpeed="1.2s" size={72} />
       <span className="text-[10px] text-faint tracking-[3px] uppercase font-mono">
         mossbrain
       </span>

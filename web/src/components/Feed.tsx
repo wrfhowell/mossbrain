@@ -58,7 +58,7 @@ function groupByDate(entries: Entry[]) {
 function InitialLoader() {
   return (
     <div className="flex flex-col items-center justify-center py-16 gap-4">
-      <Logo float size={56} className="opacity-50" />
+      <Logo float floatSpeed="1.4s" size={56} />
     </div>
   );
 }

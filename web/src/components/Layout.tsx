@@ -67,9 +67,9 @@ export default function Layout({ children, labels }: Props) {
 
         {/* Footer */}
         <footer className="mt-8 pt-4 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-2 text-[10px] text-faint tracking-widest">
-          <span>mossbrain</span>
+          <span></span>
           <Logo size={20} className="opacity-40" />
-          <span>film / chalk / ink / light</span>
+          <span></span>
         </footer>
       </div>
     </div>
