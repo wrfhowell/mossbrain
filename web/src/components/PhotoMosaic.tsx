@@ -48,7 +48,7 @@ export default function PhotoMosaic() {
         </button>
       </div>
       <div className="max-h-[340px] overflow-y-auto">
-        <div className="grid grid-cols-5 gap-0">
+        <div className="grid grid-cols-5 gap-px">
           {media.map((m, i) => {
             const grad = GRADIENT_CLASSES[i % GRADIENT_CLASSES.length];
             return (
