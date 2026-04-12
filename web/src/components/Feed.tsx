@@ -11,12 +11,36 @@ interface Props {
   onLabelsChange?: (labels: string[]) => void;
 }
 
+function relativeDay(dateKey: string): string {
+  const now = new Date();
+  const then = new Date(dateKey + "T12:00:00");
+  const diff = Math.floor(
+    (now.setHours(12, 0, 0, 0) - then.getTime()) / 86_400_000,
+  );
+  if (diff === 0) return "today";
+  if (diff === 1) return "yesterday";
+  return `${diff}d ago`;
+}
+
+function localDateKey(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 function groupByDate(entries: Entry[]) {
-  const groups: { key: string; label: string; entries: Entry[] }[] = [];
+  const groups: {
+    key: string;
+    label: string;
+    relative: string;
+    entries: Entry[];
+  }[] = [];
   for (const entry of entries) {
     const d = new Date(entry.published_at);
-    const key = d.toISOString().slice(0, 10);
+    const key = localDateKey(d);
     const label = d.toLocaleDateString("en-US", {
+      weekday: "long",
       month: "long",
       day: "numeric",
       year: "numeric",
@@ -25,7 +49,7 @@ function groupByDate(entries: Entry[]) {
     if (last?.key === key) {
       last.entries.push(entry);
     } else {
-      groups.push({ key, label, entries: [entry] });
+      groups.push({ key, label, relative: relativeDay(key), entries: [entry] });
     }
   }
   return groups;
@@ -35,7 +59,6 @@ function InitialLoader() {
   return (
     <div className="flex flex-col items-center justify-center py-16 gap-4">
       <Logo float size={56} className="opacity-50" />
-      <span className="text-[10px] text-faint tracking-[3px] uppercase">loading transmissions</span>
     </div>
   );
 }
@@ -110,9 +133,12 @@ export default function Feed({ label, onLabelsChange }: Props) {
       {items.length === 0 && loading && <InitialLoader />}
 
       {groups.map((g) => (
-        <section key={g.key}>
+        <section key={g.key} className="mb-10">
+          <h2 className="text-[17px] font-bold text-ink tracking-wide uppercase mb-4">
+            {g.label}
+          </h2>
           {g.entries.map((entry) => (
-            <EntryCard key={entry.id} entry={entry} />
+            <EntryCard key={entry.id} entry={entry} relative={g.relative} />
           ))}
         </section>
       ))}
@@ -135,7 +161,7 @@ export default function Feed({ label, onLabelsChange }: Props) {
 
       {!hasMore && items.length > 0 && (
         <p className="text-center text-[10px] text-faint py-8 tracking-widest">
-          — end of transmissions —
+          — end —
         </p>
       )}
     </div>

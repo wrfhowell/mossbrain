@@ -8,6 +8,7 @@ export interface MediaResponse {
 
 export interface EntryResponse {
   id: string;
+  entry_number: number;
   published_at: string;
   visibility: "public" | "private";
   body: string | null;

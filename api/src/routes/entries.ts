@@ -40,7 +40,7 @@ async function loadEntryResponse(
 
   const ids = entryRows.map((e) => e.id);
 
-  const [mediaRows, labelRows] = await Promise.all([
+  const [mediaRows, labelRows, numberRows] = await Promise.all([
     db
       .select()
       .from(media)
@@ -51,6 +51,14 @@ async function loadEntryResponse(
       .from(entryLabels)
       .innerJoin(labels, eq(entryLabels.labelId, labels.id))
       .where(inArray(entryLabels.entryId, ids)),
+    db.execute<{ id: string; entry_number: string }>(sql`
+      WITH numbered AS (
+        SELECT id, ROW_NUMBER() OVER (ORDER BY published_at ASC, id ASC) AS entry_number
+        FROM entries
+      )
+      SELECT id, entry_number FROM numbered
+      WHERE id IN (${sql.join(ids.map((id) => sql`${id}`), sql`, `)})
+    `),
   ]);
 
   const mediaByEntry = new Map<string, typeof mediaRows>();
@@ -67,8 +75,14 @@ async function loadEntryResponse(
     labelsByEntry.set(l.entryId, arr);
   }
 
+  const numberByEntry = new Map<string, number>();
+  for (const r of numberRows) {
+    numberByEntry.set(r.id, Number(r.entry_number));
+  }
+
   return entryRows.map((e) => ({
     id: e.id,
+    entry_number: numberByEntry.get(e.id) ?? 0,
     published_at: e.publishedAt.toISOString(),
     visibility: e.visibility,
     body:

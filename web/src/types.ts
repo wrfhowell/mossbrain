@@ -9,6 +9,7 @@ export interface Media {
 
 export interface Entry {
   id: string;
+  entry_number: number;
   published_at: string;
   visibility: "public" | "private";
   body: string | null;

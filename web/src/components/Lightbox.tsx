@@ -77,13 +77,6 @@ export default function Lightbox({ media, index, onClose, onChange }: Props) {
           className="w-full rounded-sm"
           onClick={(e) => e.stopPropagation()}
         />
-
-        <p className="text-center mt-3 font-hand text-lg text-[#c8c4b8]">
-          photograph
-        </p>
-        <p className="text-center mt-1 text-[9px] text-[#8a8880] tracking-[2px] uppercase">
-          {current.width && current.height ? `${current.width}×${current.height}` : ""}
-        </p>
       </div>
     </div>
   );

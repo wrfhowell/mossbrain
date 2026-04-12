@@ -1,10 +1,10 @@
 import { useRef, type ReactNode } from "react";
-import { useParallax } from "../hooks/useParallax";
 import { useAuth } from "../context/AuthContext";
+import { useParallax } from "../hooks/useParallax";
 import AdminBar from "./AdminBar";
+import LabelFilter from "./LabelFilter";
 import Logo from "./Logo";
 import MarginCollage from "./MarginCollage";
-import LabelFilter from "./LabelFilter";
 import PhotoMosaic from "./PhotoMosaic";
 import VisitorNotes from "./VisitorNotes";
 
@@ -27,21 +27,18 @@ export default function Layout({ children, labels }: Props) {
         <MarginCollage scrollY={scrollY} />
       </div>
 
-      <div className={`max-w-[1320px] mx-auto px-6 md:px-12 py-10 flex flex-col min-h-screen ${admin ? "pt-14" : ""}`}>
+      <div
+        className={`max-w-[1320px] mx-auto px-6 md:px-12 py-10 flex flex-col min-h-screen ${admin ? "pt-14" : ""}`}
+      >
         {/* Top bar */}
-        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-5 mb-6 border-b border-border">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-5 mb-6">
           <div className="flex items-center gap-3">
             <Logo size={28} />
             <div className="font-medium text-sm tracking-wide text-ink">
-              scattered transmissions
-              <span className="text-faint font-light text-[11px] ml-2 tracking-widest">/ mossbrain</span>
+              mossbrain
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5 text-[10px] text-faint tracking-widest">
-              <span className="w-[5px] h-[5px] rounded-full bg-green animate-[pulse-dot_2s_ease_infinite]" />
-              live
-            </div>
             <LabelFilter labels={labels} />
           </div>
         </header>
@@ -75,7 +72,7 @@ export default function Layout({ children, labels }: Props) {
 
         {/* Footer */}
         <footer className="mt-8 pt-4 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-2 text-[10px] text-faint tracking-widest">
-          <span>scattered transmissions 2026</span>
+          <span>mossbrain</span>
           <Logo size={20} className="opacity-40" />
           <span>film / chalk / ink / light</span>
         </footer>
