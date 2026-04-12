@@ -20,8 +20,32 @@ mkdir -p "$BACKUP_DIR"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 OUTFILE="$BACKUP_DIR/mossbrain_${TIMESTAMP}.sql.gz"
 
+# Find a pg_dump that's >= server version (17).
+# Try versioned installs first, then fall back to whatever's on PATH.
+PG_DUMP=""
+for candidate in \
+  /opt/homebrew/opt/postgresql@17/bin/pg_dump \
+  /opt/homebrew/opt/postgresql@16/bin/pg_dump \
+  /usr/local/opt/postgresql@17/bin/pg_dump \
+  /usr/local/opt/postgresql@16/bin/pg_dump; do
+  if [ -x "$candidate" ]; then
+    PG_DUMP="$candidate"
+    break
+  fi
+done
+
+if [ -z "$PG_DUMP" ]; then
+  PG_DUMP="$(command -v pg_dump 2>/dev/null || true)"
+fi
+
+if [ -z "$PG_DUMP" ]; then
+  echo "ERROR: pg_dump not found. Install with: brew install postgresql@17" >&2
+  exit 1
+fi
+
+echo "Using $PG_DUMP"
 echo "Backing up to $OUTFILE ..."
-pg_dump "$DATABASE_URL" | gzip > "$OUTFILE"
+"$PG_DUMP" --no-owner --no-acl "$DATABASE_URL" | gzip > "$OUTFILE"
 
 SIZE=$(du -h "$OUTFILE" | cut -f1)
 echo "Done — $SIZE compressed"
