@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-serif: "Instrument Serif", serif;
+  --font-hand: "Caveat", cursive;
+
+  --color-base: #F3ECDC;
+  --color-surface: #EFE8D6;
+  --color-surface-2: #EAE2D0;
+  --color-surface-3: #E4DCCA;
+  --color-border: #D8D0BE;
+  --color-border-light: #CCC4B2;
+  --color-ink: #2a2824;
+  --color-muted: #6a665c;
+  --color-faint: #9a9688;
+  --color-accent: #c4522a;
+  --color-teal: #4a7a8f;
+  --color-green: #5a7a4e;
+  --color-gold: #8a6a1a;
+  --color-purple: #6a5a7a;
+  --color-tag: #E8E0CE;
+}
+
+html, body {
+  min-height: 100vh;
+  background: var(--color-base);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 300;
+}
+
+::selection {
+  background: var(--color-surface-3);
+  color: var(--color-ink);
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-light);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes chip-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes lb-in {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(3px); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

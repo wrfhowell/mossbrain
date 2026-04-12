@@ -1,0 +1,15 @@
+{
+  "name": "scattered transmissions",
+  "short_name": "mossbrain",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F3ECDC",
+  "theme_color": "#F3ECDC",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "242x161",
+      "type": "image/png"
+    }
+  ]
+}
