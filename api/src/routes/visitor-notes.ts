@@ -2,18 +2,21 @@ import { Hono } from "hono";
 import crypto from "node:crypto";
 import { db } from "../db/index.js";
 import { visitorNotes } from "../db/schema.js";
-import { desc, eq, count } from "drizzle-orm";
+import { desc, eq, count, gte, and } from "drizzle-orm";
 import type { VisitorNoteResponse } from "../types.js";
 
 const app = new Hono();
 
-const MAX_NOTES_PER_VISITOR = 2;
+const MAX_PER_IP_PER_DAY = 2;
+const MAX_GLOBAL_PER_DAY = 25;
 
 function hashIp(ip: string): string {
   return crypto.createHash("sha256").update(ip).digest("hex");
 }
 
-function getClientIp(c: { req: { header: (name: string) => string | undefined } }): string {
+function getClientIp(c: {
+  req: { header: (name: string) => string | undefined };
+}): string {
   return (
     c.req.header("X-Forwarded-For")?.split(",")[0].trim() ??
     c.req.header("X-Real-IP") ??
@@ -56,18 +59,34 @@ app.post("/", async (c) => {
 
   const ip = getClientIp(c);
   const ipHash = hashIp(ip);
+  const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
-  const now = Date.now();
-  const cutoff = now - RATE_WINDOW_MS;
-  const timestamps = rateLimitMap.get(ipHash) ?? [];
-  const recent = timestamps.filter((t) => t > cutoff);
+  const [[ipCount], [globalCount]] = await Promise.all([
+    db
+      .select({ n: count() })
+      .from(visitorNotes)
+      .where(
+        and(eq(visitorNotes.ipHash, ipHash), gte(visitorNotes.createdAt, dayAgo))
+      ),
+    db
+      .select({ n: count() })
+      .from(visitorNotes)
+      .where(gte(visitorNotes.createdAt, dayAgo)),
+  ]);
 
-  if (recent.length >= RATE_LIMIT) {
-    return c.json({ error: "Rate limit exceeded. Max 5 notes per hour." }, 429);
+  if (ipCount.n >= MAX_PER_IP_PER_DAY) {
+    return c.json(
+      { error: "Rate limit exceeded. Max 2 notes per day." },
+      429
+    );
   }
 
-  recent.push(now);
-  rateLimitMap.set(ipHash, recent);
+  if (globalCount.n >= MAX_GLOBAL_PER_DAY) {
+    return c.json(
+      { error: "Daily note limit reached. Please try again tomorrow." },
+      429
+    );
+  }
 
   const [note] = await db
     .insert(visitorNotes)
