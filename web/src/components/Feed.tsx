@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { fetchEntries } from "../lib/api";
@@ -64,8 +64,10 @@ function InitialLoader() {
 }
 
 export default function Feed({ label, onLabelsChange }: Props) {
-  const [, setParams] = useSearchParams();
+  const [params, setParams] = useSearchParams();
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const highlightId = params.get("highlight") ?? null;
+  const [activeHighlight, setActiveHighlight] = useState<string | null>(null);
 
   const fetcher = useCallback(
     (cursor?: string) => fetchEntries(cursor, label),
@@ -95,6 +97,19 @@ export default function Feed({ label, onLabelsChange }: Props) {
     obs.observe(el);
     return () => obs.disconnect();
   }, [hasMore, loading, loadMore]);
+
+  useEffect(() => {
+    if (!highlightId) return;
+    const found = items.some((e) => String(e.id) === highlightId);
+    if (found) {
+      setActiveHighlight(highlightId);
+      setParams((prev) => { prev.delete("highlight"); return prev; }, { replace: true });
+    } else if (hasMore && !loading) {
+      loadMore();
+    }
+  }, [highlightId, items, hasMore, loading, loadMore, setParams]);
+
+  const clearHighlight = useCallback(() => setActiveHighlight(null), []);
 
   const allLabels = useMemo(() => {
     const set = new Set<string>();
@@ -138,7 +153,13 @@ export default function Feed({ label, onLabelsChange }: Props) {
             {g.label}
           </h2>
           {g.entries.map((entry) => (
-            <EntryCard key={entry.id} entry={entry} relative={g.relative} />
+            <EntryCard
+              key={entry.id}
+              entry={entry}
+              relative={g.relative}
+              highlighted={String(entry.id) === activeHighlight}
+              onHighlightSeen={clearHighlight}
+            />
           ))}
         </section>
       ))}

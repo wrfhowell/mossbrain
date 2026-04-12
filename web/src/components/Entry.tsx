@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Entry as EntryT } from "../types";
 import Lightbox from "./Lightbox";
@@ -50,24 +50,37 @@ interface Props {
   entry: EntryT;
   prominent?: boolean;
   relative?: string;
+  highlighted?: boolean;
+  onHighlightSeen?: () => void;
 }
 
-export default function EntryCard({ entry, prominent, relative }: Props) {
+export default function EntryCard({ entry, prominent, relative, highlighted, onHighlightSeen }: Props) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const ref = useRef<HTMLElement>(null);
   const hasPhoto = entry.media.length > 0;
   const isPrivate = entry.visibility === "private" && entry.body === null;
   const primaryLabel = entry.labels[0];
   const tagColor = primaryLabel ? (TAG_COLORS[primaryLabel] ?? "text-muted") : "text-muted";
 
+  useEffect(() => {
+    if (!highlighted || !ref.current) return;
+    ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    const timer = setTimeout(() => onHighlightSeen?.(), 1800);
+    return () => clearTimeout(timer);
+  }, [highlighted, onHighlightSeen]);
+
   return (
     <article
+      ref={ref}
       id={`entry-${entry.id}`}
       className={`
-        group relative grid grid-cols-[80px_1fr] gap-x-4 py-5 scroll-mt-4 transition-all duration-200
+        group relative grid grid-cols-[80px_1fr] gap-x-4 py-5 scroll-mt-4 transition-all duration-200 rounded
         ${hasPhoto ? "cursor-pointer" : ""}
         ${hasPhoto ? "hover:bg-surface-2 hover:-mx-2 hover:px-2 hover:rounded" : ""}
         ${prominent ? "py-7" : ""}
+        ${highlighted ? "-mx-2 px-2" : ""}
       `}
+      style={highlighted ? { animation: "highlight-pulse 1.8s ease-out forwards" } : undefined}
       onClick={hasPhoto ? () => setLightboxIdx(0) : undefined}
     >
       {/* Left: metadata column */}

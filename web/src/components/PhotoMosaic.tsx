@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { fetchMediaSample } from "../lib/api";
 import type { Media } from "../types";
 
@@ -24,7 +24,7 @@ function shuffle<T>(arr: T[]): T[] {
 
 export default function PhotoMosaic() {
   const [media, setMedia] = useState<Media[]>([]);
-  const navigate = useNavigate();
+  const [, setParams] = useSearchParams();
 
   useEffect(() => {
     fetchMediaSample().then(setMedia).catch(() => {});
@@ -54,7 +54,7 @@ export default function PhotoMosaic() {
             return (
               <button
                 key={m.id}
-                onClick={() => navigate(`/log/${m.entry_id}`)}
+                onClick={() => setParams((prev) => { prev.set("highlight", String(m.entry_id)); return prev; })}
                 className="aspect-square overflow-hidden cursor-pointer transition-all duration-150 hover:scale-105 hover:opacity-85 hover:z-10"
                 title={m.url.split("/").pop() ?? ""}
               >
