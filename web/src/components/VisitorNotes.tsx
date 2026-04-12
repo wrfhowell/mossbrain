@@ -47,7 +47,7 @@ export default function VisitorNotes({ compact }: Props) {
           value={body}
           onChange={(e) => setBody(e.target.value.slice(0, 280))}
           onKeyDown={(e) => e.key === "Enter" && submit()}
-          placeholder="leave a note…"
+          placeholder="leave me a note please..."
           maxLength={280}
           className="flex-1 bg-surface-2 border border-border text-ink font-mono text-[11px] font-light px-2 py-1.5 rounded outline-none focus:border-border-light placeholder:text-faint"
         />
