@@ -5,7 +5,7 @@ import AdminBar from "./AdminBar";
 import LabelFilter from "./LabelFilter";
 import Logo from "./Logo";
 import MarginCollage from "./MarginCollage";
-import PhotoMosaic from "./PhotoMosaic";
+import PhotoGraph from "./PhotoGraph";
 import VisitorNotes from "./VisitorNotes";
 
 interface Props {
@@ -40,7 +40,7 @@ export default function Layout({ children, labels, onDataReady }: Props) {
 
         {/* Mobile: Photos → Filter → Notes → Feed */}
         <div className="lg:hidden space-y-6">
-          <PhotoMosaic />
+          <PhotoGraph />
           <LabelFilter labels={labels} />
           <div className="border-t border-border pt-4">
             <VisitorNotes compact onReady={onDataReady} />
@@ -56,7 +56,7 @@ export default function Layout({ children, labels, onDataReady }: Props) {
 
           {/* Right: Photos + Filter + Notes */}
           <aside className="hidden lg:flex flex-col pl-6 self-start sticky top-10">
-            <PhotoMosaic />
+            <PhotoGraph />
             <div className="border-t border-border mt-3 pt-4">
               <LabelFilter labels={labels} />
             </div>
