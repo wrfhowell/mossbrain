@@ -22,7 +22,7 @@ interface Props {
 }
 
 const wizardIntro = (
-  <div className="text-[13px] leading-[1.8] tracking-[2px] text-muted">
+  <div className="text-[13px] leading-[1.8] tracking-[2px] text-ink">
     <span className="font-bold uppercase">WELCOME TO THE TOWER</span>
     <br />
     Stone Wizard™ celestial propaganda broadcast. Unfiltered ideas from a wizard
