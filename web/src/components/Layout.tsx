@@ -7,6 +7,7 @@ import Logo from "./Logo";
 import MarginCollage from "./MarginCollage";
 import PhotoGraph from "./PhotoGraph";
 import VisitorNotes from "./VisitorNotes";
+import WizardModel from "./WizardModel";
 
 interface Props {
   children: ReactNode;
@@ -18,11 +19,13 @@ const wizardIntro = (
   <div className="text-[13px] leading-[1.8] tracking-[2px] text-muted">
     <span className="font-bold uppercase">WELCOME TO THE TOWER</span>
     <br />
-    Stone Wizard® celestial propaganda broadcast. Unfiltered ideas from a wizard
+    Stone Wizard™ celestial propaganda broadcast. Unfiltered ideas from a wizard
     in training. Field notes on stones, medicine, climbing, drawing, music,
     nature, healthcare, and relationships. The brainwashing is already underway.
     If you experience dizziness, sudden clarity, or an inexplicable urge to cast
-    an incantation, do not discontinue. This is working as intended.
+    an incantation, do not discontinue - this is working as intended. Interact
+    with the cosmic photo constellation below. Click an image to view the
+    prophecy.
   </div>
 );
 
@@ -42,18 +45,11 @@ export default function Layout({ children, labels, onDataReady }: Props) {
       <div
         className={`max-w-[1320px] mx-auto px-8 md:px-16 py-10 flex flex-col min-h-screen ${admin ? "pt-14" : ""}`}
       >
-        {/* Top bar */}
-        <header className="flex items-center gap-3 pb-5 mb-6">
-          <Logo size={28} />
-          <div className="font-medium text-lg tracking-wide text-ink">
-            stone wizard
-          </div>
-        </header>
-
-        {/* Mobile: Photos → Filter → Notes → Feed */}
+        {/* Mobile: Wizard → Intro → Photos → Filter → Notes → Feed */}
         <div className="lg:hidden space-y-6">
-          <PhotoGraph />
+          <WizardModel size={132} />
           {wizardIntro}
+          <PhotoGraph />
           <LabelFilter labels={labels} />
           <div className="border-t border-border pt-4">
             <VisitorNotes compact onReady={onDataReady} />
@@ -67,10 +63,11 @@ export default function Layout({ children, labels, onDataReady }: Props) {
             {children}
           </main>
 
-          {/* Right: Photos + Filter + Notes */}
+          {/* Right: Wizard + Intro + Photos + Filter + Notes */}
           <aside className="hidden lg:flex flex-col pl-6 self-start sticky top-10">
+            <WizardModel size={132} />
+            <div className="mb-3">{wizardIntro}</div>
             <PhotoGraph />
-            <div className="mt-3">{wizardIntro}</div>
             <div className="border-t border-border mt-3 pt-4">
               <LabelFilter labels={labels} />
             </div>

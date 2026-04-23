@@ -248,7 +248,7 @@ export default function PhotoGraph() {
   return (
     <div
       ref={containerRef}
-      className="w-full h-[300px] lg:h-[400px]"
+      className="w-full h-[300px] lg:h-[400px] overflow-hidden"
     >
       <ForceGraph2D
         ref={fgRef}

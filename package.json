@@ -16,7 +16,13 @@
     "db:migrate": "npm -w api run db:migrate"
   },
   "devDependencies": {
+    "@types/three": "^0.184.0",
     "concurrently": "^9.1.0",
     "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.0",
+    "three": "^0.184.0"
   }
 }

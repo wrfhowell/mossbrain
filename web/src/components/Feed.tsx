@@ -5,7 +5,7 @@ import { fetchEntries } from "../lib/api";
 import type { Entry } from "../types";
 import DateTimeline from "./DateTimeline";
 import EntryCard from "./Entry";
-import Logo from "./Logo";
+import WizardModel from "./WizardModel";
 
 interface Props {
   label?: string;
@@ -59,7 +59,7 @@ function groupByDate(entries: Entry[]) {
 function InitialLoader() {
   return (
     <div className="flex flex-col items-center justify-center py-16 gap-4">
-      <Logo float floatSpeed="1.4s" size={56} />
+      <WizardModel size={56} />
     </div>
   );
 }
@@ -146,7 +146,7 @@ export default function Feed({ label, onLabelsChange }: Props) {
     <div>
       {/* Section label */}
       <div className="flex items-center gap-2 text-[16px] tracking-[2px] uppercase text-faint mb-4">
-        logs
+        stone wizard™
         <span className="flex-1 h-px bg-border" />
       </div>
 

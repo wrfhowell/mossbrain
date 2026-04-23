@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
-import Logo from "./components/Logo";
+import WizardModel from "./components/WizardModel";
 import HomePage from "./pages/HomePage";
 import EntryPage from "./pages/EntryPage";
 
@@ -34,7 +34,7 @@ function Splash({ onDone, ready }: { onDone: () => void; ready: boolean }) {
     <div
       className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-10 bg-base transition-opacity duration-300 ${fading ? "opacity-0 pointer-events-none" : "opacity-100"}`}
     >
-      <Logo float floatSpeed="1.2s" size={72} />
+      <WizardModel size={72} />
       <span className="text-[10px] text-faint tracking-[3px] uppercase font-mono">
         stone wizard
       </span>

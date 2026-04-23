@@ -4,7 +4,7 @@ import { fetchEntry } from "../lib/api";
 import type { Entry } from "../types";
 import EntryCard from "../components/Entry";
 import Lightbox from "../components/Lightbox";
-import Logo from "../components/Logo";
+import WizardModel from "../components/WizardModel";
 
 export default function EntryPage() {
   const { id } = useParams<{ id: string }>();
@@ -41,7 +41,7 @@ export default function EntryPage() {
   if (!entry) {
     return (
       <div className="flex flex-col items-center justify-center py-16 gap-4">
-        <Logo float size={48} className="opacity-50" />
+        <WizardModel size={48} />
         <span className="text-[10px] text-faint tracking-[3px] uppercase">loading</span>
       </div>
     );
