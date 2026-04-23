@@ -30,7 +30,6 @@ html, body {
   font-family: var(--font-body);
   font-size: 18px;
   font-weight: 400;
-  overflow-x: hidden;
 }
 
 ::selection {
