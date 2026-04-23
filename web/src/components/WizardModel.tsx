@@ -4,7 +4,7 @@ import { useGLTF, Center } from "@react-three/drei";
 import * as THREE from "three";
 
 function Wizard() {
-  const { scene } = useGLTF("/wizard.glb");
+  const { scene } = useGLTF("/wizard-compressed.glb", true);
   const clone = useMemo(() => scene.clone(true), [scene]);
   const ref = useRef<THREE.Group>(null!);
   const { camera } = useThree();
@@ -32,7 +32,7 @@ function Wizard() {
   );
 }
 
-useGLTF.preload("/wizard.glb");
+useGLTF.preload("/wizard-compressed.glb", true);
 
 interface Props {
   size?: number;
