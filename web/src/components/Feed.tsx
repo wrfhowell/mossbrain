@@ -130,9 +130,10 @@ export default function Feed({ label, onLabelsChange }: Props) {
 
   const groups = groupByDate(items);
 
+  const MAX_ANIMATE = 8;
   const initialCountRef = useRef<number | null>(null);
   if (items.length > 0 && initialCountRef.current === null) {
-    initialCountRef.current = items.length;
+    initialCountRef.current = Math.min(items.length, MAX_ANIMATE);
   }
   useEffect(() => {
     if (items.length === 0) initialCountRef.current = null;
@@ -144,19 +145,19 @@ export default function Feed({ label, onLabelsChange }: Props) {
   return (
     <div>
       {/* Section label */}
-      <div className="flex items-center gap-2 text-[13px] tracking-[2px] uppercase text-faint mb-4">
+      <div className="flex items-center gap-2 text-[16px] tracking-[2px] uppercase text-faint mb-4">
         logs
         <span className="flex-1 h-px bg-border" />
       </div>
 
       {label && (
         <div className="mb-4 flex items-center gap-2">
-          <span className="text-[9px] tracking-[1.5px] uppercase px-1.5 py-0.5 rounded-sm bg-tag text-muted">
+          <span className="text-[12px] tracking-[1.5px] uppercase px-1.5 py-0.5 rounded-sm bg-tag text-muted">
             #{label}
           </span>
           <button
             onClick={() => setParams({})}
-            className="text-[10px] text-faint hover:text-muted tracking-wider cursor-pointer"
+            className="text-[13px] text-faint hover:text-muted tracking-wider cursor-pointer"
           >
             × clear
           </button>
@@ -177,7 +178,7 @@ export default function Feed({ label, onLabelsChange }: Props) {
         <div className="flex-1 min-w-0">
           {groups.map((g) => (
             <section key={g.key} id={`date-${g.key}`} className="mb-10">
-              <h2 className="text-[17px] font-bold text-ink tracking-wide uppercase mb-4">
+              <h2 className="text-[21px] font-bold text-ink tracking-wide uppercase mb-4">
                 {g.label}
               </h2>
               {g.entries.map((entry) => {
@@ -200,20 +201,20 @@ export default function Feed({ label, onLabelsChange }: Props) {
 
           {loading && items.length > 0 && (
             <div className="flex justify-center py-6">
-              <div className="text-[10px] text-faint tracking-widest">
+              <div className="text-[13px] text-faint tracking-widest">
                 loading...
               </div>
             </div>
           )}
 
           {error && (
-            <p className="text-center text-[11px] text-accent py-4">
+            <p className="text-center text-[14px] text-accent py-4">
               failed to load entries.
             </p>
           )}
 
           {!hasMore && items.length > 0 && (
-            <p className="text-center text-[10px] text-faint py-8 tracking-widest">
+            <p className="text-center text-[13px] text-faint py-8 tracking-widest">
               — end —
             </p>
           )}

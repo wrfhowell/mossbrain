@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface DateGroup {
   key: string;
@@ -19,9 +19,10 @@ const THUMB_PCT = 12;
 const NAV_W = 70;
 
 export default function DateTimeline({ groups }: Props) {
-  const [scrollPct, setScrollPct] = useState(0);
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [hovered, setHovered] = useState(false);
+  const thumbRef = useRef<HTMLDivElement>(null);
+  const lastActiveRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (groups.length === 0) return;
@@ -32,7 +33,11 @@ export default function DateTimeline({ groups }: Props) {
       rafId = requestAnimationFrame(() => {
         const docHeight =
           document.documentElement.scrollHeight - window.innerHeight;
-        setScrollPct(docHeight > 0 ? Math.min(window.scrollY / docHeight, 1) : 0);
+        const pct = docHeight > 0 ? Math.min(window.scrollY / docHeight, 1) : 0;
+
+        if (thumbRef.current) {
+          thumbRef.current.style.top = `${pct * (100 - THUMB_PCT)}%`;
+        }
 
         let active = groups[0]?.key ?? null;
         for (const g of groups) {
@@ -41,7 +46,10 @@ export default function DateTimeline({ groups }: Props) {
             active = g.key;
           }
         }
-        setActiveKey(active);
+        if (active !== lastActiveRef.current) {
+          lastActiveRef.current = active;
+          setActiveKey(active);
+        }
       });
     };
 
@@ -62,8 +70,6 @@ export default function DateTimeline({ groups }: Props) {
 
   if (groups.length < 2) return null;
 
-  const thumbTop = scrollPct * (100 - THUMB_PCT);
-
   return (
     <nav
       className="hidden lg:flex sticky top-10 self-start shrink-0"
@@ -76,10 +82,11 @@ export default function DateTimeline({ groups }: Props) {
         <div className="absolute left-[2px] top-0 bottom-0 w-px bg-border pointer-events-none" />
 
         <div
-          className="absolute left-[1px] w-[3px] rounded-full pointer-events-none"
+          ref={thumbRef}
+          className="absolute left-[1px] w-[3px] rounded-full pointer-events-none will-change-[top]"
           style={{
             height: `${THUMB_PCT}%`,
-            top: `${thumbTop}%`,
+            top: "0%",
             transition: "top 100ms linear",
             background: "var(--color-muted)",
           }}
@@ -116,7 +123,7 @@ export default function DateTimeline({ groups }: Props) {
               onClick={() => scrollTo(g.key)}
             >
               <span
-                className={`text-[11px] tracking-wide whitespace-nowrap leading-none transition-all duration-150 ${isActive ? "text-ink font-medium" : "text-faint hover:text-ink"}`}
+                className={`text-[14px] tracking-wide whitespace-nowrap leading-none transition-all duration-150 ${isActive ? "text-ink font-medium" : "text-faint hover:text-ink"}`}
                 style={{ opacity: isActive ? 1 : hovered ? 1 : 0, marginTop: -1 }}
               >
                 {shortDate(g.key)}

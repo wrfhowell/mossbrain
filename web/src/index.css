@@ -28,7 +28,7 @@ html, body {
   background: var(--color-base);
   color: var(--color-ink);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 400;
 }
 

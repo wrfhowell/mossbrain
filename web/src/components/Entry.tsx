@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import type { Entry as EntryT } from "../types";
 import Lightbox from "./Lightbox";
@@ -70,7 +71,20 @@ export default function EntryCard({ entry, prominent, relative, highlighted, onH
     return () => clearTimeout(timer);
   }, [highlighted, onHighlightSeen]);
 
+  useEffect(() => {
+    if (animateIndex == null) return;
+    const el = ref.current;
+    if (!el) return;
+    const handler = () => {
+      el.style.animation = "";
+      el.style.opacity = "";
+    };
+    el.addEventListener("animationend", handler);
+    return () => el.removeEventListener("animationend", handler);
+  }, [animateIndex]);
+
   return (
+    <>
     <article
       ref={ref}
       id={`entry-${entry.id}`}
@@ -95,36 +109,36 @@ export default function EntryCard({ entry, prominent, relative, highlighted, onH
       {/* Left: metadata column */}
       <div className="flex flex-col gap-0.5 pt-0.5">
         {relative && (
-          <span className="text-[11px] text-faint tracking-wide">{relative}</span>
+          <span className="text-[14px] text-faint tracking-wide">{relative}</span>
         )}
         <time
           dateTime={entry.published_at}
           title={new Date(entry.published_at).toLocaleString()}
-          className="text-[11px] text-faint tracking-wide"
+          className="text-[14px] text-faint tracking-wide"
         >
           {formatTime(entry.published_at)}
         </time>
-        <span className="text-[11px] text-teal font-mono">{entry.entry_number}</span>
+        <span className="text-[14px] text-teal font-mono">{entry.entry_number}</span>
       </div>
 
       {/* Right: body + media + labels */}
       <div className="min-w-0 flex gap-3">
         <div className="flex-1 min-w-0">
           {primaryLabel && (
-            <span className={`text-[9px] tracking-[1.5px] uppercase px-1.5 py-0.5 rounded-sm bg-tag ${tagColor} float-right ml-2`}>
+            <span className={`text-[12px] tracking-[1.5px] uppercase px-1.5 py-0.5 rounded-sm bg-tag ${tagColor} float-right ml-2`}>
               {primaryLabel}
             </span>
           )}
 
           {isPrivate ? (
-            <div className="inline-flex items-center gap-1.5 text-[11px] text-faint italic bg-surface-2 border border-border rounded px-2.5 py-1.5">
+            <div className="inline-flex items-center gap-1.5 text-[14px] text-faint italic bg-surface-2 border border-border rounded px-2.5 py-1.5">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
                 <path fillRule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clipRule="evenodd" />
               </svg>
               private entry
             </div>
           ) : entry.body ? (
-            <div className={`text-ink leading-[1.75] font-light ${prominent ? "text-[12px]" : "text-[11.5px]"}`}>
+            <div className={`text-ink leading-[1.75] font-light ${prominent ? "text-[15.5px]" : "text-[15px]"}`}>
               {renderBody(entry.body)}
             </div>
           ) : null}
@@ -135,7 +149,7 @@ export default function EntryCard({ entry, prominent, relative, highlighted, onH
                 <Link
                   key={l}
                   to={`/?label=${encodeURIComponent(l)}`}
-                  className={`text-[9px] tracking-[1px] uppercase px-1.5 py-0.5 rounded-sm bg-tag ${TAG_COLORS[l] ?? "text-muted"} hover:bg-surface-3 transition-colors`}
+                  className={`text-[12px] tracking-[1px] uppercase px-1.5 py-0.5 rounded-sm bg-tag ${TAG_COLORS[l] ?? "text-muted"} hover:bg-surface-3 transition-colors`}
                 >
                   #{l}
                 </Link>
@@ -164,14 +178,16 @@ export default function EntryCard({ entry, prominent, relative, highlighted, onH
         )}
       </div>
 
-      {lightboxIdx !== null && (
-        <Lightbox
-          media={entry.media}
-          index={lightboxIdx}
-          onClose={() => setLightboxIdx(null)}
-          onChange={setLightboxIdx}
-        />
-      )}
     </article>
+    {lightboxIdx !== null && createPortal(
+      <Lightbox
+        media={entry.media}
+        index={lightboxIdx}
+        onClose={() => setLightboxIdx(null)}
+        onChange={setLightboxIdx}
+      />,
+      document.body,
+    )}
+    </>
   );
 }

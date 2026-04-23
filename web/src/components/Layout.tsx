@@ -14,6 +14,18 @@ interface Props {
   onDataReady?: () => void;
 }
 
+const wizardIntro = (
+  <div className="text-[13px] leading-[1.8] tracking-[2px] text-muted">
+    <span className="font-bold uppercase">WELCOME TO THE TOWER</span>
+    <br />
+    Stone Wizard® celestial propaganda broadcast. Unfiltered ideas from a wizard
+    in training. Field notes on stones, medicine, climbing, drawing, music,
+    nature, healthcare, and relationships. The brainwashing is already underway.
+    If you experience dizziness, sudden clarity, or an inexplicable urge to cast
+    an incantation, do not discontinue. This is working as intended.
+  </div>
+);
+
 export default function Layout({ children, labels, onDataReady }: Props) {
   const scrollY = useParallax();
   const { admin } = useAuth();
@@ -33,7 +45,7 @@ export default function Layout({ children, labels, onDataReady }: Props) {
         {/* Top bar */}
         <header className="flex items-center gap-3 pb-5 mb-6">
           <Logo size={28} />
-          <div className="font-medium text-sm tracking-wide text-ink">
+          <div className="font-medium text-lg tracking-wide text-ink">
             stone wizard
           </div>
         </header>
@@ -41,6 +53,7 @@ export default function Layout({ children, labels, onDataReady }: Props) {
         {/* Mobile: Photos → Filter → Notes → Feed */}
         <div className="lg:hidden space-y-6">
           <PhotoGraph />
+          {wizardIntro}
           <LabelFilter labels={labels} />
           <div className="border-t border-border pt-4">
             <VisitorNotes compact onReady={onDataReady} />
@@ -57,6 +70,7 @@ export default function Layout({ children, labels, onDataReady }: Props) {
           {/* Right: Photos + Filter + Notes */}
           <aside className="hidden lg:flex flex-col pl-6 self-start sticky top-10">
             <PhotoGraph />
+            <div className="mt-3">{wizardIntro}</div>
             <div className="border-t border-border mt-3 pt-4">
               <LabelFilter labels={labels} />
             </div>
@@ -67,7 +81,7 @@ export default function Layout({ children, labels, onDataReady }: Props) {
         </div>
 
         {/* Footer */}
-        <footer className="mt-8 pt-4 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-2 text-[10px] text-faint tracking-widest">
+        <footer className="mt-8 pt-4 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-2 text-[13px] text-faint tracking-widest">
           <span></span>
           <Logo size={20} className="opacity-40" />
           <span></span>
