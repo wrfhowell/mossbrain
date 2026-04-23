@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useParallax } from "../hooks/useParallax";
 import AdminBar from "./AdminBar";
@@ -29,9 +29,43 @@ const wizardIntro = (
   </div>
 );
 
+function useStickyScroll() {
+  const ref = useRef<HTMLElement>(null);
+  const [stickyTop, setStickyTop] = useState(40);
+
+  const recalc = useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+    const sidebarH = el.scrollHeight;
+    const viewportH = window.innerHeight;
+    const pad = 40;
+    if (sidebarH > viewportH - pad) {
+      setStickyTop(-(sidebarH - viewportH + pad));
+    } else {
+      setStickyTop(pad);
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const ro = new ResizeObserver(recalc);
+    ro.observe(el);
+    window.addEventListener("resize", recalc);
+    recalc();
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", recalc);
+    };
+  }, [recalc]);
+
+  return { ref, stickyTop };
+}
+
 export default function Layout({ children, labels, onDataReady }: Props) {
   const scrollY = useParallax();
   const { admin } = useAuth();
+  const { ref: sidebarRef, stickyTop } = useStickyScroll();
 
   return (
     <div className="relative min-h-screen">
@@ -64,7 +98,11 @@ export default function Layout({ children, labels, onDataReady }: Props) {
           </main>
 
           {/* Right: Wizard + Intro + Photos + Filter + Notes */}
-          <aside className="hidden lg:flex flex-col pl-6 self-start sticky top-10">
+          <aside
+            ref={sidebarRef}
+            className="hidden lg:flex flex-col pl-6 self-start sticky"
+            style={{ top: stickyTop }}
+          >
             <WizardModel size={132} />
             <div className="mb-3">{wizardIntro}</div>
             <PhotoGraph />
