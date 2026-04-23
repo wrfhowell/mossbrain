@@ -9,7 +9,7 @@ export default function Logo({ className = "", float: doFloat = false, floatSpee
   return (
     <img
       src="/logo.png"
-      alt="mossbrain"
+      alt="stone wizard"
       width={size}
       height={Math.round(size * (161 / 242))}
       style={doFloat ? { animation: `float ${floatSpeed} ease-in-out infinite` } : undefined}

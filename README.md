@@ -1,4 +1,4 @@
-# mossbrain
+# stone wizard
 
 A Telegram-synced personal transmission log. Send messages to a Telegram bot and they appear as entries on a single-page web app with an Obsidian-like timeline, dense photo mosaic, visitor notes, and parallax margin collage.
 

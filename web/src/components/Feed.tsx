@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { fetchEntries } from "../lib/api";
 import type { Entry } from "../types";
+import DateTimeline from "./DateTimeline";
 import EntryCard from "./Entry";
 import Logo from "./Logo";
 
@@ -103,7 +104,13 @@ export default function Feed({ label, onLabelsChange }: Props) {
     const found = items.some((e) => String(e.id) === highlightId);
     if (found) {
       setActiveHighlight(highlightId);
-      setParams((prev) => { prev.delete("highlight"); return prev; }, { replace: true });
+      setParams(
+        (prev) => {
+          prev.delete("highlight");
+          return prev;
+        },
+        { replace: true },
+      );
     } else if (hasMore && !loading) {
       loadMore();
     }
@@ -126,7 +133,7 @@ export default function Feed({ label, onLabelsChange }: Props) {
   return (
     <div>
       {/* Section label */}
-      <div className="flex items-center gap-2 text-[10px] tracking-[2px] uppercase text-faint mb-4">
+      <div className="flex items-center gap-2 text-[13px] tracking-[2px] uppercase text-faint mb-4">
         logs
         <span className="flex-1 h-px bg-border" />
       </div>
@@ -147,44 +154,56 @@ export default function Feed({ label, onLabelsChange }: Props) {
 
       {items.length === 0 && loading && <InitialLoader />}
 
-      {groups.map((g) => (
-        <section key={g.key} className="mb-10">
-          <h2 className="text-[17px] font-bold text-ink tracking-wide uppercase mb-4">
-            {g.label}
-          </h2>
-          {g.entries.map((entry) => (
-            <EntryCard
-              key={entry.id}
-              entry={entry}
-              relative={g.relative}
-              highlighted={String(entry.id) === activeHighlight}
-              onHighlightSeen={clearHighlight}
-            />
+      <div className="flex">
+        <DateTimeline
+          groups={groups.map((g) => ({
+            key: g.key,
+            label: g.label,
+            entryCount: g.entries.length,
+          }))}
+        />
+
+        <div className="flex-1 min-w-0">
+          {groups.map((g) => (
+            <section key={g.key} id={`date-${g.key}`} className="mb-10">
+              <h2 className="text-[17px] font-bold text-ink tracking-wide uppercase mb-4">
+                {g.label}
+              </h2>
+              {g.entries.map((entry) => (
+                <EntryCard
+                  key={entry.id}
+                  entry={entry}
+                  relative={g.relative}
+                  highlighted={String(entry.id) === activeHighlight}
+                  onHighlightSeen={clearHighlight}
+                />
+              ))}
+            </section>
           ))}
-        </section>
-      ))}
 
-      <div ref={sentinelRef} className="h-px" />
+          <div ref={sentinelRef} className="h-px" />
 
-      {loading && items.length > 0 && (
-        <div className="flex justify-center py-6">
-          <div className="text-[10px] text-faint tracking-widest">
-            loading...
-          </div>
+          {loading && items.length > 0 && (
+            <div className="flex justify-center py-6">
+              <div className="text-[10px] text-faint tracking-widest">
+                loading...
+              </div>
+            </div>
+          )}
+
+          {error && (
+            <p className="text-center text-[11px] text-accent py-4">
+              failed to load entries.
+            </p>
+          )}
+
+          {!hasMore && items.length > 0 && (
+            <p className="text-center text-[10px] text-faint py-8 tracking-widest">
+              — end —
+            </p>
+          )}
         </div>
-      )}
-
-      {error && (
-        <p className="text-center text-[11px] text-accent py-4">
-          failed to load entries.
-        </p>
-      )}
-
-      {!hasMore && items.length > 0 && (
-        <p className="text-center text-[10px] text-faint py-8 tracking-widest">
-          — end —
-        </p>
-      )}
+      </div>
     </div>
   );
 }

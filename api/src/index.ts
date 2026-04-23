@@ -46,5 +46,5 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const port = Number(process.env.PORT ?? 3000);
-console.log(`mossbrain api listening on port ${port}`);
+console.log(`stone wizard api listening on port ${port}`);
 serve({ fetch: app.fetch, port });

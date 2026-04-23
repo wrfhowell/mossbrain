@@ -34,7 +34,7 @@ export default function Layout({ children, labels, onDataReady }: Props) {
         <header className="flex items-center gap-3 pb-5 mb-6">
           <Logo size={28} />
           <div className="font-medium text-sm tracking-wide text-ink">
-            mossbrain
+            stone wizard
           </div>
         </header>
 

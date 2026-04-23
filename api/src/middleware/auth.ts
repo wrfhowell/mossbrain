@@ -7,7 +7,7 @@ interface SessionPayload {
   exp: number;
 }
 
-const COOKIE_NAME = "mossbrain_session";
+const COOKIE_NAME = "stone_wizard_session";
 
 function getSecret(): string {
   return process.env.SESSION_SECRET!;
