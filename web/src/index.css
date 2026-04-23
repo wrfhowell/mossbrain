@@ -73,3 +73,8 @@ html, body {
   0% { background-color: var(--color-surface-3); }
   100% { background-color: transparent; }
 }
+
+@keyframes entry-in {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

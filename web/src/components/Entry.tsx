@@ -52,9 +52,10 @@ interface Props {
   relative?: string;
   highlighted?: boolean;
   onHighlightSeen?: () => void;
+  animateIndex?: number;
 }
 
-export default function EntryCard({ entry, prominent, relative, highlighted, onHighlightSeen }: Props) {
+export default function EntryCard({ entry, prominent, relative, highlighted, onHighlightSeen, animateIndex }: Props) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
   const ref = useRef<HTMLElement>(null);
   const hasPhoto = entry.media.length > 0;
@@ -80,7 +81,15 @@ export default function EntryCard({ entry, prominent, relative, highlighted, onH
         ${prominent ? "py-7" : ""}
         ${highlighted ? "-mx-2 px-2" : ""}
       `}
-      style={highlighted ? { animation: "highlight-pulse 1.8s ease-out forwards" } : undefined}
+      style={{
+        ...(animateIndex != null && {
+          opacity: 0,
+          animation: `entry-in 0.45s ease-out ${animateIndex * 50}ms forwards`,
+        }),
+        ...(highlighted && {
+          animation: "highlight-pulse 1.8s ease-out forwards",
+        }),
+      }}
       onClick={hasPhoto ? () => setLightboxIdx(0) : undefined}
     >
       {/* Left: metadata column */}

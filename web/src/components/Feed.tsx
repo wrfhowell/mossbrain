@@ -130,6 +130,17 @@ export default function Feed({ label, onLabelsChange }: Props) {
 
   const groups = groupByDate(items);
 
+  const initialCountRef = useRef<number | null>(null);
+  if (items.length > 0 && initialCountRef.current === null) {
+    initialCountRef.current = items.length;
+  }
+  useEffect(() => {
+    if (items.length === 0) initialCountRef.current = null;
+  }, [items.length]);
+
+  let flatIdx = 0;
+  const animateCount = initialCountRef.current ?? 0;
+
   return (
     <div>
       {/* Section label */}
@@ -169,15 +180,19 @@ export default function Feed({ label, onLabelsChange }: Props) {
               <h2 className="text-[17px] font-bold text-ink tracking-wide uppercase mb-4">
                 {g.label}
               </h2>
-              {g.entries.map((entry) => (
-                <EntryCard
-                  key={entry.id}
-                  entry={entry}
-                  relative={g.relative}
-                  highlighted={String(entry.id) === activeHighlight}
-                  onHighlightSeen={clearHighlight}
-                />
-              ))}
+              {g.entries.map((entry) => {
+                const idx = flatIdx++;
+                return (
+                  <EntryCard
+                    key={entry.id}
+                    entry={entry}
+                    relative={g.relative}
+                    highlighted={String(entry.id) === activeHighlight}
+                    onHighlightSeen={clearHighlight}
+                    animateIndex={idx < animateCount ? idx : undefined}
+                  />
+                );
+              })}
             </section>
           ))}
 
