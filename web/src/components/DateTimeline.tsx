@@ -101,28 +101,29 @@ export default function DateTimeline({ groups }: Props) {
         })}
       </div>
 
-      {/* Labels column — always takes space, fades in/out */}
+      {/* Labels column — active always visible, rest on hover */}
       <div
         className="flex flex-col pl-2 flex-1"
-        style={{
-          minHeight: "100%",
-          opacity: hovered ? 1 : 0,
-          transition: "opacity 180ms ease",
-          pointerEvents: hovered ? "auto" : "none",
-        }}
+        style={{ minHeight: "100%", pointerEvents: hovered ? "auto" : "none" }}
       >
-        {groups.map((g) => (
-          <button
-            key={g.key}
-            className="min-h-0 text-left cursor-pointer"
-            style={{ flex: Math.max(g.entryCount, 1) }}
-            onClick={() => scrollTo(g.key)}
-          >
-            <span className={`text-[11px] tracking-wide whitespace-nowrap leading-none transition-colors duration-150 ${activeKey === g.key ? "text-ink font-medium" : "text-faint hover:text-ink"}`}>
-              {shortDate(g.key)}
-            </span>
-          </button>
-        ))}
+        {groups.map((g) => {
+          const isActive = activeKey === g.key;
+          return (
+            <button
+              key={g.key}
+              className="min-h-0 text-left cursor-pointer flex items-start"
+              style={{ flex: Math.max(g.entryCount, 1) }}
+              onClick={() => scrollTo(g.key)}
+            >
+              <span
+                className={`text-[11px] tracking-wide whitespace-nowrap leading-none transition-all duration-150 ${isActive ? "text-ink font-medium" : "text-faint hover:text-ink"}`}
+                style={{ opacity: isActive ? 1 : hovered ? 1 : 0, marginTop: -1 }}
+              >
+                {shortDate(g.key)}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </nav>
   );
