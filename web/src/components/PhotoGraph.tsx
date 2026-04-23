@@ -196,19 +196,23 @@ export default function PhotoGraph() {
         ctx.shadowBlur = 6 * ((halfSize - NODE_HALF_SIZE) / (NODE_HOVER_HALF_SIZE - NODE_HALF_SIZE));
       }
 
+      ctx.beginPath();
+      ctx.arc(x, y, halfSize, 0, 2 * Math.PI);
+      ctx.clip();
+
       const img = imageCache.current.get(node.url ?? "");
       if (img && img.complete && img.naturalWidth > 0) {
         ctx.drawImage(img, x - halfSize, y - halfSize, size, size);
       } else {
         ctx.fillStyle = colors.surface2;
-        ctx.fillRect(x - halfSize, y - halfSize, size, size);
+        ctx.fill();
       }
 
       ctx.shadowColor = "transparent";
       ctx.shadowBlur = 0;
       ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1 / globalScale;
-      ctx.strokeRect(x - halfSize, y - halfSize, size, size);
+      ctx.stroke();
 
       ctx.restore();
     },
@@ -225,23 +229,23 @@ export default function PhotoGraph() {
       const x = node.x ?? 0;
       const y = node.y ?? 0;
       ctx.fillStyle = color;
-      ctx.fillRect(
-        x - NODE_HALF_SIZE,
-        y - NODE_HALF_SIZE,
-        NODE_HALF_SIZE * 2,
-        NODE_HALF_SIZE * 2
-      );
+      ctx.beginPath();
+      ctx.arc(x, y, NODE_HALF_SIZE, 0, 2 * Math.PI);
+      ctx.fill();
     },
     []
   );
 
-  const linkColor = useMemo(() => {
-    const hex = colors.border;
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r},${g},${b},0.55)`;
-  }, [colors.border]);
+  const linkColor = useMemo(
+    () => {
+      const hex = getCssColor("--color-teal", "#4a7a8f");
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `rgba(${r},${g},${b},0.25)`;
+    },
+    []
+  );
 
   if (media.length === 0) return null;
 
@@ -261,7 +265,7 @@ export default function PhotoGraph() {
         nodePointerAreaPaint={nodePointerAreaPaint}
         nodeLabel=""
         linkColor={() => linkColor}
-        linkWidth={1}
+        linkWidth={1.3}
         onNodeClick={handleNodeClick}
         onNodeHover={handleNodeHover}
         d3AlphaDecay={0.05}
