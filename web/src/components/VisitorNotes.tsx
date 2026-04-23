@@ -4,16 +4,26 @@ import type { VisitorNote } from "../types";
 
 interface Props {
   compact?: boolean;
+  onReady?: () => void;
 }
 
-export default function VisitorNotes({ compact }: Props) {
+export default function VisitorNotes({ compact, onReady }: Props) {
   const [notes, setNotes] = useState<VisitorNote[]>([]);
   const [body, setBody] = useState("");
   const [posting, setPosting] = useState(false);
   const [feedback, setFeedback] = useState<{ ok: boolean; msg: string } | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    fetchVisitorNotes().then(setNotes).catch(() => {});
+    fetchVisitorNotes()
+      .then((data) => {
+        setNotes(data);
+        requestAnimationFrame(() => setLoaded(true));
+        onReady?.();
+      })
+      .catch(() => {
+        onReady?.();
+      });
   }, []);
 
   async function submit() {
@@ -77,10 +87,11 @@ export default function VisitorNotes({ compact }: Props) {
         {notes.length === 0 && (
           <p className="text-[10px] text-faint italic">no notes yet</p>
         )}
-        {notes.map((n) => (
+        {notes.map((n, i) => (
           <div
             key={n.id}
-            className="text-[10px] font-light px-2 py-1 bg-surface-2 border border-border rounded text-muted tracking-wide animate-[chip-in_0.25s_ease_forwards]"
+            className="text-[10px] font-light px-2 py-1 bg-surface-2 border border-border rounded text-muted tracking-wide opacity-0 animate-[chip-in_0.3s_ease_forwards]"
+            style={loaded ? { animationDelay: `${i * 30}ms` } : undefined}
           >
             {n.body}
           </div>

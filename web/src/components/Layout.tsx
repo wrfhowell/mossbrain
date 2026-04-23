@@ -11,9 +11,10 @@ import VisitorNotes from "./VisitorNotes";
 interface Props {
   children: ReactNode;
   labels: string[];
+  onDataReady?: () => void;
 }
 
-export default function Layout({ children, labels }: Props) {
+export default function Layout({ children, labels, onDataReady }: Props) {
   const scrollY = useParallax();
   const { admin } = useAuth();
 
@@ -42,7 +43,7 @@ export default function Layout({ children, labels }: Props) {
           <PhotoMosaic />
           <LabelFilter labels={labels} />
           <div className="border-t border-border pt-4">
-            <VisitorNotes compact />
+            <VisitorNotes compact onReady={onDataReady} />
           </div>
         </div>
 
@@ -60,7 +61,7 @@ export default function Layout({ children, labels }: Props) {
               <LabelFilter labels={labels} />
             </div>
             <div className="border-t border-border mt-3 pt-4">
-              <VisitorNotes />
+              <VisitorNotes onReady={onDataReady} />
             </div>
           </aside>
         </div>

@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 @theme {
+  --font-body: "warnock-pro", "Palatino", "Palatino Linotype", "Palatino LT STD", "Book Antiqua", "Georgia", serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --font-serif: "Instrument Serif", serif;
   --font-hand: "Caveat", cursive;
 
-  --color-base: #F3ECDC;
+  --color-base: #f7efe4;
   --color-surface: #EFE8D6;
   --color-surface-2: #EAE2D0;
   --color-surface-3: #E4DCCA;
@@ -26,9 +27,9 @@ html, body {
   min-height: 100vh;
   background: var(--color-base);
   color: var(--color-ink);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 300;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
 }
 
 ::selection {
@@ -49,8 +50,8 @@ html, body {
 }
 
 @keyframes chip-in {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes lb-in {

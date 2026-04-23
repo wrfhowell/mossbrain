@@ -6,14 +6,22 @@ import Logo from "./components/Logo";
 import HomePage from "./pages/HomePage";
 import EntryPage from "./pages/EntryPage";
 
-function Splash({ onDone }: { onDone: () => void }) {
+function Splash({ onDone, ready }: { onDone: () => void; ready: boolean }) {
+  const [minTime, setMinTime] = useState(false);
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    const fadeTimer = setTimeout(() => setFading(true), 1100);
-    const doneTimer = setTimeout(onDone, 1400);
-    return () => { clearTimeout(fadeTimer); clearTimeout(doneTimer); };
-  }, [onDone]);
+    const t = setTimeout(() => setMinTime(true), 1100);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (minTime && ready && !fading) {
+      setFading(true);
+      const t = setTimeout(onDone, 300);
+      return () => clearTimeout(t);
+    }
+  }, [minTime, ready, fading, onDone]);
 
   return (
     <div
@@ -30,6 +38,7 @@ function Splash({ onDone }: { onDone: () => void }) {
 export default function App() {
   const [labels, setLabels] = useState<string[]>([]);
   const [splashDone, setSplashDone] = useState(false);
+  const [dataReady, setDataReady] = useState(false);
   const onLabelsChange = useCallback((incoming: string[]) => {
     setLabels((prev) => {
       const merged = Array.from(new Set([...prev, ...incoming])).sort();
@@ -39,12 +48,13 @@ export default function App() {
     });
   }, []);
   const onSplashDone = useCallback(() => setSplashDone(true), []);
+  const onDataReady = useCallback(() => setDataReady(true), []);
 
   return (
     <BrowserRouter>
       <AuthProvider>
-        {!splashDone && <Splash onDone={onSplashDone} />}
-        <Layout labels={labels}>
+        {!splashDone && <Splash onDone={onSplashDone} ready={dataReady} />}
+        <Layout labels={labels} onDataReady={onDataReady}>
           <Routes>
             <Route path="/" element={<HomePage onLabelsChange={onLabelsChange} />} />
             <Route path="/log/:id" element={<EntryPage />} />

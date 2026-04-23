@@ -18,7 +18,6 @@ type Env = {
 
 const app = new Hono<Env>();
 
-const PAGE_SIZE = 30;
 
 function buildMediaResponse(
   m: { id: string; storageKey: string; width: number | null; height: number | null; sortOrder: number }
@@ -132,24 +131,14 @@ app.get("/", async (c) => {
     .select()
     .from(entries)
     .where(where)
-    .orderBy(desc(entries.publishedAt), desc(entries.id))
-    .limit(PAGE_SIZE + 1);
+    .orderBy(desc(entries.publishedAt), desc(entries.id));
 
-  const hasMore = rows.length > PAGE_SIZE;
-  const page = hasMore ? rows.slice(0, PAGE_SIZE) : rows;
-
-  let nextCursor: string | null = null;
-  if (hasMore) {
-    const last = page[page.length - 1];
-    nextCursor = `${last.publishedAt.toISOString()}_${last.id}`;
-  }
-
-  const items = await loadEntryResponse(page, isAdmin);
+  const items = await loadEntryResponse(rows, isAdmin);
 
   return c.json({
     items,
-    next_cursor: nextCursor,
-    has_more: hasMore,
+    next_cursor: null,
+    has_more: false,
   } satisfies PaginatedResponse<EntryResponse>);
 });
 
