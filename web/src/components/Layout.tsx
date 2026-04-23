@@ -1,4 +1,10 @@
-import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useAuth } from "../context/AuthContext";
 import { useParallax } from "../hooks/useParallax";
 import AdminBar from "./AdminBar";
@@ -20,7 +26,7 @@ const wizardIntro = (
     <span className="font-bold uppercase">WELCOME TO THE TOWER</span>
     <br />
     Stone Wizard™ celestial propaganda broadcast. Unfiltered ideas from a wizard
-    in training. Field notes on stones, medicine, climbing, drawing, music,
+    in training. Field notes on stones, healing, levitation, drawing, music,
     nature, healthcare, and relationships. The brainwashing is already underway.
     If you experience dizziness, sudden clarity, or an inexplicable urge to cast
     an incantation, do not discontinue - this is working as intended. Interact
