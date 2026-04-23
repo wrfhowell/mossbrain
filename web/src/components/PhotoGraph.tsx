@@ -1,7 +1,7 @@
-import { useEffect, useState, useRef, useCallback, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
-import ForceGraph2D from "react-force-graph-2d";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ForceGraphMethods, NodeObject } from "react-force-graph-2d";
+import ForceGraph2D from "react-force-graph-2d";
+import { useSearchParams } from "react-router-dom";
 import { fetchMediaSample } from "../lib/api";
 import type { Media } from "../types";
 
@@ -42,8 +42,7 @@ function buildGraph(media: Media[], seed: number): GraphData {
   const edgeSet = new Set<string>();
   const links: GraphLink[] = [];
 
-  const edgeKey = (a: string, b: string) =>
-    a < b ? `${a}|${b}` : `${b}|${a}`;
+  const edgeKey = (a: string, b: string) => (a < b ? `${a}|${b}` : `${b}|${a}`);
 
   for (const node of nodes) {
     const count = 2 + Math.floor(rand() * 3); // 2-4 connections
@@ -79,7 +78,7 @@ const LERP_SPEED = 0.15;
 export default function PhotoGraph() {
   const [media, setMedia] = useState<Media[]>([]);
   const [, setParams] = useSearchParams();
-  const [dimensions, setDimensions] = useState({ width: 340, height: 400 });
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [imagesLoaded, setImagesLoaded] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -103,12 +102,14 @@ export default function PhotoGraph() {
       surface2: getCssColor("--color-surface-2", "#EAE2D0"),
       borderLight: getCssColor("--color-border-light", "#CCC4B2"),
     }),
-    []
+    [],
   );
 
   // Fetch media
   useEffect(() => {
-    fetchMediaSample().then(setMedia).catch(() => {});
+    fetchMediaSample()
+      .then(setMedia)
+      .catch(() => {});
   }, []);
 
   // Preload images -- bump counter on load to trigger canvas redraw
@@ -123,7 +124,9 @@ export default function PhotoGraph() {
     }
   }, [media]);
 
-  // ResizeObserver for dynamic sizing
+  // ResizeObserver for dynamic sizing — re-run when media arrives so
+  // the ref is attached to a real DOM node.
+  const hasMedia = media.length > 0;
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -131,13 +134,16 @@ export default function PhotoGraph() {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
         if (width > 0 && height > 0) {
-          setDimensions({ width: Math.round(width), height: Math.round(height) });
+          setDimensions({
+            width: Math.round(width),
+            height: Math.round(height),
+          });
         }
       }
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [hasMedia]);
 
   // Configure forces after graph mounts
   useEffect(() => {
@@ -162,21 +168,18 @@ export default function PhotoGraph() {
         });
       }
     },
-    [setParams]
+    [setParams],
   );
 
-  const handleNodeHover = useCallback(
-    (node: NodeObject<GraphNode> | null) => {
-      hoverNodeId.current = node?.id ?? null;
-    },
-    []
-  );
+  const handleNodeHover = useCallback((node: NodeObject<GraphNode> | null) => {
+    hoverNodeId.current = node?.id ?? null;
+  }, []);
 
   const nodeCanvasObject = useCallback(
     (
       node: NodeObject<GraphNode>,
       ctx: CanvasRenderingContext2D,
-      globalScale: number
+      globalScale: number,
     ) => {
       const id = node.id as string;
       const isHovered = hoverNodeId.current === id;
@@ -193,7 +196,10 @@ export default function PhotoGraph() {
 
       if (halfSize > NODE_HALF_SIZE + 0.5) {
         ctx.shadowColor = colors.borderLight;
-        ctx.shadowBlur = 6 * ((halfSize - NODE_HALF_SIZE) / (NODE_HOVER_HALF_SIZE - NODE_HALF_SIZE));
+        ctx.shadowBlur =
+          6 *
+          ((halfSize - NODE_HALF_SIZE) /
+            (NODE_HOVER_HALF_SIZE - NODE_HALF_SIZE));
       }
 
       ctx.beginPath();
@@ -217,14 +223,14 @@ export default function PhotoGraph() {
       ctx.restore();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [colors, imagesLoaded]
+    [colors, imagesLoaded],
   );
 
   const nodePointerAreaPaint = useCallback(
     (
       node: NodeObject<GraphNode>,
       color: string,
-      ctx: CanvasRenderingContext2D
+      ctx: CanvasRenderingContext2D,
     ) => {
       const x = node.x ?? 0;
       const y = node.y ?? 0;
@@ -233,19 +239,18 @@ export default function PhotoGraph() {
       ctx.arc(x, y, NODE_HALF_SIZE, 0, 2 * Math.PI);
       ctx.fill();
     },
-    []
+    [],
   );
 
-  const linkColor = useMemo(
-    () => {
-      const hex = getCssColor("--color-teal", "#4a7a8f");
-      const r = parseInt(hex.slice(1, 3), 16);
-      const g = parseInt(hex.slice(3, 5), 16);
-      const b = parseInt(hex.slice(5, 7), 16);
-      return `rgba(${r},${g},${b},0.25)`;
-    },
-    []
-  );
+  const linkColor = useMemo(() => {
+    const hex = getCssColor("--color-teal", "#4a7a8f");
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r},${g},${b},0.25)`;
+  }, []);
+
+  const ready = media.length > 0 && dimensions.width > 0 && dimensions.height > 0;
 
   if (media.length === 0) return null;
 
@@ -254,7 +259,7 @@ export default function PhotoGraph() {
       ref={containerRef}
       className="w-full h-[300px] lg:h-[400px] overflow-hidden"
     >
-      <ForceGraph2D
+      {ready && <ForceGraph2D
         ref={fgRef}
         graphData={graphData}
         width={dimensions.width}
@@ -274,7 +279,7 @@ export default function PhotoGraph() {
         enableZoomInteraction={true}
         enablePanInteraction={true}
         autoPauseRedraw={false}
-      />
+      />}
     </div>
   );
 }
