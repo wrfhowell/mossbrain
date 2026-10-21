@@ -86,7 +86,10 @@ async function loadEntryResponse(
     visibility: e.visibility,
     body:
       e.visibility === "private" && !isAdmin ? null : e.body,
-    media: (mediaByEntry.get(e.id) ?? []).map(buildMediaResponse),
+    media:
+      e.visibility === "private" && !isAdmin
+        ? []
+        : (mediaByEntry.get(e.id) ?? []).map(buildMediaResponse),
     labels: labelsByEntry.get(e.id) ?? [],
   }));
 }

@@ -1,71 +1,29 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useSearchParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import Thought from "../components/Thought";
 import { fetchEntry } from "../lib/api";
 import type { Entry } from "../types";
-import EntryCard from "../components/Entry";
-import Lightbox from "../components/Lightbox";
-import WizardModel from "../components/WizardModel";
 
 export default function EntryPage() {
   const { id } = useParams<{ id: string }>();
-  const [params] = useSearchParams();
   const [entry, setEntry] = useState<Entry | null>(null);
   const [error, setError] = useState(false);
-  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
   useEffect(() => {
     if (!id) return;
-    fetchEntry(id)
-      .then((e) => {
-        setEntry(e);
-        const photo = params.get("photo");
-        if (photo) {
-          const idx = e.media.findIndex((m) => m.id === photo);
-          if (idx >= 0) setLightboxIdx(idx);
-        }
-      })
-      .catch(() => setError(true));
-  }, [id, params]);
-
-  if (error) {
-    return (
-      <div className="py-12 text-center">
-        <p className="text-muted text-[12px] mb-4">transmission not found.</p>
-        <Link to="/" className="text-accent hover:text-accent/80 text-[11px] tracking-widest">
-          ← back to feed
-        </Link>
-      </div>
-    );
-  }
-
-  if (!entry) {
-    return (
-      <div className="flex flex-col items-center justify-center py-16 gap-4">
-        <WizardModel size={48} />
-        <span className="text-[10px] text-faint tracking-[3px] uppercase">loading</span>
-      </div>
-    );
-  }
+    fetchEntry(id).then(setEntry).catch(() => setError(true));
+  }, [id]);
 
   return (
-    <div>
-      <Link
-        to="/"
-        className="inline-block mb-6 text-[11px] text-accent hover:text-accent/80 transition-colors tracking-widest"
-      >
-        ← back to feed
-      </Link>
-
-      <EntryCard entry={entry} prominent />
-
-      {lightboxIdx !== null && (
-        <Lightbox
-          media={entry.media}
-          index={lightboxIdx}
-          onClose={() => setLightboxIdx(null)}
-          onChange={setLightboxIdx}
-        />
-      )}
-    </div>
+    <main className="max-w-[720px] px-4 sm:px-8 pt-8 pb-32">
+      <p>
+        <Link to="/thoughts">← thoughts</Link>
+      </p>
+      <div className="mt-8">
+        {error && <p className="text-faint">not found.</p>}
+        {!entry && !error && <p className="text-faint">loading…</p>}
+        {entry && <Thought entry={entry} />}
+      </div>
+    </main>
   );
 }

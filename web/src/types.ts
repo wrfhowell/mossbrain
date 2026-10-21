@@ -17,12 +17,6 @@ export interface Entry {
   labels: string[];
 }
 
-export interface VisitorNote {
-  id: string;
-  body: string;
-  created_at: string;
-}
-
 export interface PaginatedResponse<T> {
   items: T[];
   next_cursor: string | null;

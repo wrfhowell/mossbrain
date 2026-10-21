@@ -3,24 +3,20 @@
 @theme {
   --font-body: "warnock-pro", "Palatino", "Palatino Linotype", "Palatino LT STD", "Book Antiqua", "Georgia", serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
-  --font-serif: "Instrument Serif", serif;
-  --font-hand: "Caveat", cursive;
+  --font-wide: "Archivo", "Helvetica Neue", Arial, sans-serif;
 
-  --color-base: #f7efe4;
-  --color-surface: #EFE8D6;
-  --color-surface-2: #EAE2D0;
-  --color-surface-3: #E4DCCA;
-  --color-border: #D8D0BE;
-  --color-border-light: #CCC4B2;
-  --color-ink: #2a2824;
-  --color-muted: #6a665c;
-  --color-faint: #9a9688;
+  --color-base: #ffffff;
+  --color-surface: #f6f6f6;
+  --color-surface-2: #eeeeee;
+  --color-border: #d6d6d6;
+  --color-border-light: #c4c4c4;
+  --color-ink: #000000;
+  --color-muted: #555555;
+  --color-faint: #8a8a8a;
+  --color-link: #0000ee;
+  --color-visited: #551a8b;
   --color-accent: #c4522a;
-  --color-teal: #4a7a8f;
-  --color-green: #5a7a4e;
-  --color-gold: #8a6a1a;
-  --color-purple: #6a5a7a;
-  --color-tag: #E8E0CE;
+  --color-highlight: #fff6b0;
 }
 
 html, body {
@@ -28,21 +24,48 @@ html, body {
   background: var(--color-base);
   color: var(--color-ink);
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 400;
+  line-height: 1.45;
+  overflow-x: hidden;
 }
 
-@media (max-width: 1023px) {
-  html, body {
-    overflow-x: hidden;
-  }
+/* No italics anywhere, including rendered markdown */
+*, em, i, cite, address, dfn, var {
+  font-style: normal !important;
+}
+/* The one deliberate exception */
+.italic-ok {
+  font-style: italic !important;
+}
+
+/* Subtly widen and squash all text. Applied per text block (not the page) so
+   images and figures aren't distorted; width is shrunk by the same factor so
+   wrapping and alignment still fit the column after the stretch. */
+p, h1, h2, h3, h4, figcaption, nav a, .text-stretch {
+  transform: scale(1.05, 0.97);
+  transform-origin: left top;
+  width: calc(100% / 1.05);
 }
 
 ::selection {
-  background: var(--color-surface-3);
-  color: var(--color-ink);
+  background: #b4d5fe;
 }
 
+/* Old-school blue links */
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+a:visited {
+  color: var(--color-visited);
+}
+a:active {
+  color: #ee0000;
+}
+
+/* Hide the native scrollbar; the thoughts page draws its own month rail */
 * {
   scrollbar-width: none;
 }
@@ -50,37 +73,17 @@ html, body {
   display: none;
 }
 
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-@keyframes chip-in {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes lb-in {
-  from { transform: scale(0.85); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(8px); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 @keyframes highlight-pulse {
-  0% { background-color: var(--color-surface-3); }
+  0% { background-color: var(--color-highlight); }
   100% { background-color: transparent; }
 }
 
-@keyframes entry-in {
-  from { opacity: 0; transform: translateY(-14px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }

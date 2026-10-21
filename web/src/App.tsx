@@ -1,72 +1,48 @@
-import { useState, useCallback, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import AdminBar from "./components/AdminBar";
 import { AuthProvider } from "./context/AuthContext";
-import Layout from "./components/Layout";
-import WizardModel from "./components/WizardModel";
-import HomePage from "./pages/HomePage";
+import { PAGES } from "./lib/pages";
+import BlankPage from "./pages/BlankPage";
+import ContactPage from "./pages/ContactPage";
+import DesignPage from "./pages/DesignPage";
 import EntryPage from "./pages/EntryPage";
+import HomePage from "./pages/HomePage";
+import ProjectsPage from "./pages/ProjectsPage";
+import TeamsPage from "./pages/TeamsPage";
+import ThoughtsPage from "./pages/ThoughtsPage";
 
-function Splash({ onDone, ready }: { onDone: () => void; ready: boolean }) {
-  const [minTime, setMinTime] = useState(false);
-  const [fading, setFading] = useState(false);
+// Pages with their own routes; the rest of PAGES fall back to the placeholder
+const BUILT = new Set(["/thoughts", "/design", "/teams", "/research", "/contact", "/projects"]);
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
   useEffect(() => {
-    const t = setTimeout(() => setMinTime(true), 1100);
-    return () => clearTimeout(t);
-  }, []);
-
-  // Fallback: dismiss after 4s even if data hasn't loaded
-  const [maxWait, setMaxWait] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setMaxWait(true), 4000);
-    return () => clearTimeout(t);
-  }, []);
-
-  useEffect(() => {
-    if (minTime && (ready || maxWait) && !fading) {
-      setFading(true);
-      const t = setTimeout(onDone, 300);
-      return () => clearTimeout(t);
-    }
-  }, [minTime, ready, maxWait, fading, onDone]);
-
-  return (
-    <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-10 bg-base transition-opacity duration-300 ${fading ? "opacity-0 pointer-events-none" : "opacity-100"}`}
-    >
-      <WizardModel size={72} />
-      <span className="text-[10px] text-faint tracking-[3px] uppercase font-mono">
-        stone wizard
-      </span>
-    </div>
-  );
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
 }
 
 export default function App() {
-  const [labels, setLabels] = useState<string[]>([]);
-  const [splashDone, setSplashDone] = useState(false);
-  const [dataReady, setDataReady] = useState(false);
-  const onLabelsChange = useCallback((incoming: string[]) => {
-    setLabels((prev) => {
-      const merged = Array.from(new Set([...prev, ...incoming])).sort();
-      if (merged.length === prev.length && merged.every((l, i) => l === prev[i]))
-        return prev;
-      return merged;
-    });
-  }, []);
-  const onSplashDone = useCallback(() => setSplashDone(true), []);
-  const onDataReady = useCallback(() => setDataReady(true), []);
-
   return (
     <BrowserRouter>
       <AuthProvider>
-        {!splashDone && <Splash onDone={onSplashDone} ready={dataReady} />}
-        <Layout labels={labels} onDataReady={onDataReady}>
-          <Routes>
-            <Route path="/" element={<HomePage onLabelsChange={onLabelsChange} />} />
-            <Route path="/log/:id" element={<EntryPage />} />
-          </Routes>
-        </Layout>
+        <ScrollToTop />
+        <AdminBar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/thoughts" element={<ThoughtsPage />} />
+          <Route path="/log/:id" element={<EntryPage />} />
+          <Route path="/design" element={<DesignPage />} />
+          <Route path="/teams" element={<TeamsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/research" element={<BlankPage message="coming soon..." />} />
+          {PAGES.filter((p) => !BUILT.has(p.path)).map((p) => (
+            <Route key={p.path} path={p.path} element={<BlankPage />} />
+          ))}
+          <Route path="*" element={<BlankPage />} />
+        </Routes>
       </AuthProvider>
     </BrowserRouter>
   );

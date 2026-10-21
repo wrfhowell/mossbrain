@@ -33,6 +33,12 @@ app.use(
 
 app.use("*", sessionMiddleware);
 
+// Opt every response (pages, images, API JSON) out of AI training; see also web/public/robots.txt
+app.use("*", async (c, next) => {
+  await next();
+  c.header("X-Robots-Tag", "noai, noimageai");
+});
+
 app.route("/api/entries", entriesRoutes);
 app.route("/api/auth", authRoutes);
 app.route("/api/telegram", telegramRoutes);

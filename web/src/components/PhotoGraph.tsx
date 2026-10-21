@@ -71,8 +71,8 @@ function getCssColor(varName: string, fallback: string): string {
   return val || fallback;
 }
 
-const NODE_HALF_SIZE = 8;
-const NODE_HOVER_HALF_SIZE = 12;
+const NODE_HALF_SIZE = 5;
+const NODE_HOVER_HALF_SIZE = 9;
 const LERP_SPEED = 0.15;
 
 export default function PhotoGraph() {
@@ -124,7 +124,7 @@ export default function PhotoGraph() {
     }
   }, [media]);
 
-  // ResizeObserver for dynamic sizing — re-run when media arrives so
+  // ResizeObserver for dynamic sizing; re-run when media arrives so
   // the ref is attached to a real DOM node.
   const hasMedia = media.length > 0;
   useEffect(() => {
@@ -151,11 +151,11 @@ export default function PhotoGraph() {
     if (!fg) return;
     const charge = fg.d3Force("charge");
     if (charge && "strength" in charge) {
-      (charge as any).strength(-60);
+      (charge as any).strength(-28);
     }
     const link = fg.d3Force("link");
     if (link && "distance" in link) {
-      (link as any).distance(60);
+      (link as any).distance(28);
     }
   }, [graphData]);
 
@@ -257,7 +257,7 @@ export default function PhotoGraph() {
   return (
     <div
       ref={containerRef}
-      className="w-full h-[300px] lg:h-[400px] overflow-hidden"
+      className="w-full h-full overflow-hidden"
     >
       {ready && <ForceGraph2D
         ref={fgRef}
@@ -270,13 +270,13 @@ export default function PhotoGraph() {
         nodePointerAreaPaint={nodePointerAreaPaint}
         nodeLabel=""
         linkColor={() => linkColor}
-        linkWidth={1.3}
+        linkWidth={0.8}
         onNodeClick={handleNodeClick}
         onNodeHover={handleNodeHover}
         d3AlphaDecay={0.05}
         cooldownTicks={100}
         enableNodeDrag={true}
-        enableZoomInteraction={true}
+        enableZoomInteraction={false}
         enablePanInteraction={true}
         autoPauseRedraw={false}
       />}
