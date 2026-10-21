@@ -28,7 +28,8 @@ export default function HomePage() {
         "hard" problems in the medical and healthcare space. I have strong
         interests in growth and design. Outside of work I spend time trying to
         get better at moving through, and saving people's lives in, the
-        mountains.
+        mountains. Talk to me about cooking, rock and folk music, piano, ice
+        hockey, rock climbing, and climate change.
       </p>
       <p className="italic-ok my-[0.5em]">What has your life meant to others?</p>
 
