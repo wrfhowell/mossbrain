@@ -4,6 +4,7 @@ import AdminBar from "./components/AdminBar";
 import { AuthProvider } from "./context/AuthContext";
 import { PAGES } from "./lib/pages";
 import BlankPage from "./pages/BlankPage";
+import CanadaPage from "./pages/CanadaPage";
 import ContactPage from "./pages/ContactPage";
 import DesignPage from "./pages/DesignPage";
 import EntryPage from "./pages/EntryPage";
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/teams" element={<TeamsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/canada" element={<CanadaPage />} />
           <Route path="/research" element={<BlankPage message="coming soon..." />} />
           {PAGES.filter((p) => !BUILT.has(p.path)).map((p) => (
             <Route key={p.path} path={p.path} element={<BlankPage />} />

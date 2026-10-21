@@ -23,7 +23,7 @@ export default function HomePage() {
       </h1>
 
       <p>
-        I am an engineer currently focused on post-training research for
+        I am an engineer from <Link to="/canada">Canada</Link> currently focused on post-training research for
         healthcare and CUA. I am interested in frontier work in RL on classically
         "hard" problems in the medical and healthcare space. I have strong
         interests in growth and design. Outside of work I spend time trying to

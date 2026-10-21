@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import FlagFigure from "../components/figures/FlagFigure";
 import TeamLogo, { type TeamMark } from "../components/figures/TeamLogo";
 
 const TEAMS: { name: string; mark: TeamMark; years?: string; current?: boolean; notes: string[] }[] = [
@@ -71,12 +70,14 @@ export default function TeamsPage() {
           </div>
         </section>
       ))}
-      <section className="mt-[1.45em]">
-        <p>
-          <b>Education</b>
-        </p>
-        <p>UBC</p>
-        <FlagFigure />
+      <section className="mt-[1.45em] flex items-start gap-3">
+        <TeamLogo mark="ubc" />
+        <div className="min-w-0 flex-1">
+          <p>
+            <b>Education</b>
+          </p>
+          <p>UBC</p>
+        </div>
       </section>
     </main>
   );
