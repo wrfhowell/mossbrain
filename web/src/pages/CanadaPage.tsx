@@ -8,7 +8,7 @@ export default function CanadaPage() {
       <p>
         <Link to="/">← home</Link>
       </p>
-      <p className="mt-[1.45em]">I'm from Vancouver and Edmonton.</p>
+      <p className="mt-[1.45em]">I call Vancouver and Edmonton home.</p>
       <FlagFigure />
     </main>
   );
