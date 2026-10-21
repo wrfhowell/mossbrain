@@ -40,8 +40,8 @@ export default function HomePage() {
             </Link>
           ))}
         </nav>
-        {/* Two blank lines between the links and the figures */}
-        <div className="h-[2.9em]" />
+        {/* One blank line between the links and the figures */}
+        <div className="h-[1.45em]" />
 
         <div className="w-4/5">
           <VesselFigure />
