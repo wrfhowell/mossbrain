@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import FlagFigure from "../components/figures/FlagFigure";
 
 /** Unlisted page, reached only from "Canada" in the homepage bio. */
 export default function CanadaPage() {
@@ -9,7 +8,6 @@ export default function CanadaPage() {
         <Link to="/">← home</Link>
       </p>
       <p className="mt-[1.45em]">I call Vancouver and Edmonton home.</p>
-      <FlagFigure />
     </main>
   );
 }

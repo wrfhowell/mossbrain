@@ -47,6 +47,10 @@ p, h1, h2, h3, h4, figcaption, nav a, .text-stretch {
   transform-origin: left top;
   width: calc(100% / 1.05);
 }
+/* Nav links hug their text so only the words are clickable */
+nav a {
+  width: fit-content;
+}
 
 ::selection {
   background: #b4d5fe;

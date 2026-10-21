@@ -6,7 +6,7 @@ export default function WizardLogo() {
     <Link
       to="/"
       aria-label="home"
-      className="fixed left-3 bottom-2 z-40 inline-flex items-end select-none bg-base px-1.5 py-1"
+      className="inline-flex items-end select-none"
       style={{ textDecoration: "none" }}
     >
       <span
