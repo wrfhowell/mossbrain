@@ -24,8 +24,8 @@ export default function HomePage() {
         </h1>
 
         <p>
-          Hey, I'm Will. I am an engineer from <Link to="/canada">Canada</Link> currently focused on post-training
-          research for healthcare and CUA. I am interested in frontier work in RL on classically
+          Hey, I'm Will. Engineer from <Link to="/canada">Canada</Link> currently living in San
+          Francisco. I'm currently focused on post-training research for healthcare and CUA. I am interested in frontier work in RL on classically
           "hard" problems in the medical and healthcare space. I have strong interests in growth and
           design. Outside of work I spend time trying to get better at moving through, and saving
           people's lives in, the mountains. Talk to me about cooking, rock/folk music, piano, ice

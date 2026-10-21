@@ -7,7 +7,7 @@ export default function CanadaPage() {
       <p>
         <Link to="/">← home</Link>
       </p>
-      <p className="mt-[1.45em]">I call Vancouver and Edmonton home.</p>
+      <p className="mt-[1.45em]">I'm currently living in San Francisco but call Vancouver and Edmonton home.</p>
     </main>
   );
 }
