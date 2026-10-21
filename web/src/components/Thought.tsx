@@ -66,7 +66,7 @@ export default function Thought({ entry, highlighted, onHighlightSeen }: Props) 
     >
       <p>
         <time dateTime={entry.published_at}>{formatDate(d)}</time>
-        <span className="text-faint"> · {formatTime(d)}</span>
+        <span className="text-faint"> {formatTime(d)}</span>
       </p>
       {isPrivate ? (
         <p className="text-faint">[private]</p>
