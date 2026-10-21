@@ -14,7 +14,6 @@ export interface Entry {
   visibility: "public" | "private";
   body: string | null;
   media: Media[];
-  labels: string[];
 }
 
 export interface PaginatedResponse<T> {

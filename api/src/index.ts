@@ -9,7 +9,6 @@ import { sessionMiddleware } from "./middleware/auth.js";
 import authRoutes from "./routes/auth.js";
 import entriesRoutes from "./routes/entries.js";
 import telegramRoutes from "./routes/telegram.js";
-import visitorNotesRoutes from "./routes/visitor-notes.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const webDist = path.resolve(__dirname, "../../web/dist");
@@ -42,7 +41,6 @@ app.use("*", async (c, next) => {
 app.route("/api/entries", entriesRoutes);
 app.route("/api/auth", authRoutes);
 app.route("/api/telegram", telegramRoutes);
-app.route("/api/visitor-notes", visitorNotesRoutes);
 
 app.get("/api/health", (c) => c.json({ status: "ok" }));
 

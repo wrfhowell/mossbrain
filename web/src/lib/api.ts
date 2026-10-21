@@ -11,7 +11,7 @@ async function json<T>(url: string, init?: RequestInit): Promise<T> {
 // Pages warmed by prefetchEntries, keyed by cursor; each is handed out once so later visits refetch
 const prefetched = new Map<string, Promise<PaginatedResponse<Entry>>>();
 
-/** Walk the whole unlabelled archive in the background so the thoughts page opens instantly. */
+/** Walk the whole archive in the background so the thoughts page opens instantly. */
 export async function prefetchEntries() {
   let cursor: string | undefined;
   for (;;) {
@@ -30,17 +30,14 @@ export async function prefetchEntries() {
   }
 }
 
-export function fetchEntries(cursor?: string, label?: string) {
-  if (!label) {
-    const hit = prefetched.get(cursor ?? "");
-    if (hit) {
-      prefetched.delete(cursor ?? "");
-      return hit;
-    }
+export function fetchEntries(cursor?: string) {
+  const hit = prefetched.get(cursor ?? "");
+  if (hit) {
+    prefetched.delete(cursor ?? "");
+    return hit;
   }
   const params = new URLSearchParams();
   if (cursor) params.set("cursor", cursor);
-  if (label) params.set("label", label);
   const qs = params.toString();
   return json<PaginatedResponse<Entry>>(`/api/entries${qs ? `?${qs}` : ""}`);
 }
