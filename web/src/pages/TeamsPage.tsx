@@ -18,7 +18,7 @@ const TEAMS: { name: string; mark: TeamMark; years?: string; current?: boolean; 
     mark: "bamru",
     years: "2026",
     current: true,
-    notes: ["All-terrain technical rescue team based out of the Bay Area."],
+    notes: ["All-terrain, high altitude technical rescue team based out of the Bay Area."],
   },
   {
     name: "Commure",
