@@ -9,12 +9,13 @@ import ContactPage from "./pages/ContactPage";
 import DesignPage from "./pages/DesignPage";
 import EntryPage from "./pages/EntryPage";
 import HomePage from "./pages/HomePage";
+import MountainsPage from "./pages/MountainsPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import TeamsPage from "./pages/TeamsPage";
 import ThoughtsPage from "./pages/ThoughtsPage";
 
 // Pages with their own routes; the rest of PAGES fall back to the placeholder
-const BUILT = new Set(["/thoughts", "/design", "/teams", "/research", "/contact", "/projects"]);
+const BUILT = new Set(["/thoughts", "/design", "/teams", "/research", "/contact", "/projects", "/mountains"]);
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -39,6 +40,9 @@ export default function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/canada" element={<CanadaPage />} />
+          <Route path="/mountains" element={<MountainsPage />} />
+          <Route path="/mountains/climbing" element={<BlankPage />} />
+          <Route path="/mountains/rescues" element={<BlankPage />} />
           <Route path="/research" element={<BlankPage message="coming soon..." />} />
           {PAGES.filter((p) => !BUILT.has(p.path)).map((p) => (
             <Route key={p.path} path={p.path} element={<BlankPage />} />
