@@ -24,14 +24,31 @@ export default function HomePage() {
         </h1>
 
         <p>
-          Hey, I'm Will. Engineer from <Link to="/canada">Canada</Link> currently living in San
-          Francisco. I'm currently focused on post-training research for healthcare and CUA. I am interested in frontier work in RL on classically
-          "hard" problems in the medical and healthcare space. I have strong interests in growth and
-          design. Outside of work I spend time trying to get better at moving through, and saving
-          people's lives in, the mountains. Talk to me about cooking, rock/folk music, piano, ice
-          hockey, alpine climbing, and climate change.
+          I'm a research engineer from <Link to="/canada">Canada</Link> focused on agent post-training
+          research for healthcare and CUA at{" "}
+          <a href="https://kineticsystems.ai" target="_blank" rel="noopener noreferrer">
+            Kinetic Systems
+          </a>
+          .
+          <br />
+          I currently live in San Francisco.
+          <br />
+          I am interested in frontier work in RL on classically "hard" medical and healthcare problems. Turns out being able to get 100% on the USMLE is 
+          very different from the actual world, and machine learning has a way to dramatically improve medical outcomes.
+          <br />
+          I have strong interests in design and growth.
+          <br />
+          Outside of work I spend time climbing, exploring, and doing volunteer search and rescue in the
+          mountains with{" "}
+          <a href="https://bamru.org" target="_blank" rel="noopener noreferrer">
+            BAMRU
+          </a>
+          .
+          <br />
+          Talk to me about cooking, rock/folk music, piano, ice hockey, alpine climbing, and climate
+          change.
         </p>
-        <p className="italic-ok my-[0.5em]">What has your life meant to others?</p>
+        <p className="italic-ok my-[0.5em]">Measure your life by what it has meant to others.</p>
 
         <nav className="flex flex-col">
           {PAGES.map((p) => (
