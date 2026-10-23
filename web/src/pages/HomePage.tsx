@@ -36,6 +36,13 @@ export default function HomePage() {
           I am interested in frontier work in RL on classically "hard" medical and healthcare problems. Turns out being able to get 100% on the USMLE is 
           very different from the actual world, and machine learning still has lots of room to improve until we can dramatically improve medical outcomes.
           <br />
+          Before this I worked on context aware vehicle systems at <a href="https://rivian.com" target="_blank" rel="noopener noreferrer">
+            Rivian
+          </a>, built self driving simulation software for <a href="https://github.com/wrfhowell/3d-vehicle-simulation-player" "target="_blank" rel="noopener noreferrer">
+            Applied Intuition
+          </a>, and helped scale <a href="linkedin.com/company/commure" target="_blank" rel="noopener noreferrer">
+            Commure/Athelas
+          </a> to be used in >1% of all US healthcare appointments.
           I have strong interests in design and growth.
           <br />
           Outside of work I spend time climbing, exploring, and doing volunteer search and rescue in the
