@@ -40,7 +40,7 @@ export default function HomePage() {
             Rivian
           </a>, built self driving simulation software for <a href="https://github.com/wrfhowell/3d-vehicle-simulation-player" "target="_blank" rel="noopener noreferrer">
             Applied Intuition
-          </a>, and helped scale <a href="linkedin.com/company/commure" target="_blank" rel="noopener noreferrer">
+          </a>, and helped scale <a href="https://www.linkedin.com/company/commure/posts/" target="_blank" rel="noopener noreferrer">
             Commure/Athelas
           </a> to be used in >1% of all US healthcare appointments.
           I have strong interests in design and growth.
