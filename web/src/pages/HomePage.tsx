@@ -34,8 +34,7 @@ export default function HomePage() {
           I currently live in San Francisco.
           <br />
           I'm interested in frontier RL work on classically &quot;hard&quot; medical and healthcare
-          problems. It turns out scoring 100% on the USMLE is very different from the real world, and
-          machine learning still has a lot of room to improve before it can dramatically improve medical
+          problems. I believe that ML still has a lot of room to improve before it can dramatically improve medical
           outcomes.
           <br />
           Before this, I worked on context aware vehicle systems at{" "}
