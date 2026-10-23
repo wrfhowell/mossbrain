@@ -65,7 +65,7 @@ export default function HomePage() {
           <a href="https://bamru.org" target="_blank" rel="noopener noreferrer">
             BAMRU
           </a>
-          .
+          . In the long term, I want to spend more time saving peoples lives in the mountains, medically and technically, in the highest capacity I can.
           <br />
           Talk to me about cooking, rock/folk music, piano, ice hockey, alpine climbing, and climate
           change.
