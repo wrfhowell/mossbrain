@@ -24,7 +24,7 @@ export default function HomePage() {
         </h1>
 
         <p>
-          I'm Will Howell, a research engineer from <Link to="/canada">Canada</Link> focused on agent
+          I'm Will, a research engineer from <Link to="/canada">Canada</Link> focused on agent
           post-training research for healthcare and CUA at{" "}
           <a href="https://kineticsystems.ai" target="_blank" rel="noopener noreferrer">
             Kinetic Systems
