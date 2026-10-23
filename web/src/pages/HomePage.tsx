@@ -34,7 +34,7 @@ export default function HomePage() {
           I currently live in San Francisco.
           <br />
           I am interested in frontier work in RL on classically "hard" medical and healthcare problems. Turns out being able to get 100% on the USMLE is 
-          very different from the actual world, and machine learning has a way to dramatically improve medical outcomes.
+          very different from the actual world, and machine learning still has lots of room to improve until we can dramatically improve medical outcomes.
           <br />
           I have strong interests in design and growth.
           <br />
