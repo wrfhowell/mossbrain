@@ -24,8 +24,8 @@ export default function HomePage() {
         </h1>
 
         <p>
-          I'm Will Howell, a research engineer from <Link to="/canada">Canada</Link> focused on agent post-training
-          research for healthcare and CUA at{" "}
+          I'm Will Howell, a research engineer from <Link to="/canada">Canada</Link> focused on agent
+          post-training research for healthcare and CUA at{" "}
           <a href="https://kineticsystems.ai" target="_blank" rel="noopener noreferrer">
             Kinetic Systems
           </a>
@@ -33,19 +33,34 @@ export default function HomePage() {
           <br />
           I currently live in San Francisco.
           <br />
-          I am interested in frontier work in RL on classically "hard" medical and healthcare problems. Turns out being able to get 100% on the USMLE is 
-          very different from the actual world, and machine learning still has lots of room to improve until we can dramatically improve medical outcomes.
+          I'm interested in frontier RL work on classically &quot;hard&quot; medical and healthcare
+          problems. It turns out scoring 100% on the USMLE is very different from the real world, and
+          machine learning still has a lot of room to improve before it can dramatically improve medical
+          outcomes.
           <br />
-          Before this I worked on context aware vehicle systems at <a href="https://rivian.com" target="_blank" rel="noopener noreferrer">
+          Before this, I worked on context-aware vehicle systems at{" "}
+          <a href="https://rivian.com" target="_blank" rel="noopener noreferrer">
             Rivian
-          </a>, built self driving simulation software for <a href="https://github.com/wrfhowell/3d-vehicle-simulation-player" "target="_blank" rel="noopener noreferrer">
-            Applied Intuition
-          </a>, and helped scale <a href="https://www.linkedin.com/company/commure/posts/" target="_blank" rel="noopener noreferrer">
+          </a>
+          , built a{" "}
+          <a
+            href="https://github.com/wrfhowell/3d-vehicle-simulation-player"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            self-driving simulation player
+          </a>{" "}
+          for an Applied Intuition project, and helped scale{" "}
+          <a
+            href="https://www.linkedin.com/company/commure/posts/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Commure/Athelas
-          </a> to be used in >1% of all US healthcare appointments.
-          I have strong interests in design and growth.
+          </a>{" "}
+          to over 1% of all US healthcare appointments. I have strong interests in design and growth.
           <br />
-          Outside of work I spend time climbing, exploring, and doing volunteer search and rescue in the
+          Outside of work, I spend time climbing, exploring, and doing volunteer search and rescue in the
           mountains with{" "}
           <a href="https://bamru.org" target="_blank" rel="noopener noreferrer">
             BAMRU
