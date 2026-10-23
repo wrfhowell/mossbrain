@@ -38,19 +38,19 @@ export default function HomePage() {
           machine learning still has a lot of room to improve before it can dramatically improve medical
           outcomes.
           <br />
-          Before this, I worked on context-aware vehicle systems at{" "}
+          Before this, I worked on context aware vehicle systems at{" "}
           <a href="https://rivian.com" target="_blank" rel="noopener noreferrer">
             Rivian
           </a>
-          , built a{" "}
+          , built self-driving simulation software for{" "}
           <a
             href="https://github.com/wrfhowell/3d-vehicle-simulation-player"
             target="_blank"
             rel="noopener noreferrer"
           >
-            self-driving simulation player
+            Applied Intuition
           </a>{" "}
-          for an Applied Intuition project, and helped scale{" "}
+          , and helped scale{" "}
           <a
             href="https://www.linkedin.com/company/commure/posts/"
             target="_blank"
